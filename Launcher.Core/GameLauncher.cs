@@ -149,7 +149,7 @@ public sealed class GameLauncher(HttpClient http, string? sharedRuntime = null)
 
     public async Task<int> LaunchAsync(Instance instance, string gamePath, Profile profile, IProgress<Activity> progress,
         Action<string> log, CancellationToken token, Action started, string? java = null,
-        string? server = null, int serverPort = 25565)
+        string? server = null, int serverPort = 25565, Func<bool, byte[]?>? localSkin = null)
     {
         var (launcher, version) = await PrepareLauncherAsync(instance, gamePath, progress, token);
         var launchOptions = new MLaunchOption
@@ -157,6 +157,17 @@ public sealed class GameLauncher(HttpClient http, string? sharedRuntime = null)
             Session = MSession.CreateOfflineSession(profile.Nick),
             MaximumRamMb = instance.Ram
         };
+        try
+        {
+            var uuid = Guid.TryParse(launchOptions.Session.UUID, out var parsed) ? parsed
+                : throw new InvalidDataException("The offline session has no UUID.");
+            await Task.Run(() => LocalSkinPack.Configure(instance, gamePath, uuid, localSkin), token);
+        }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or InvalidDataException or JsonException
+            or FormatException or InvalidOperationException or KeyNotFoundException)
+        {
+            log($"[WARN] AwoLauncher skin: {error.Message}");
+        }
         if (!string.IsNullOrWhiteSpace(java))
         {
             if (!File.Exists(java)) throw new FileNotFoundException("Java executable was not found.", java);

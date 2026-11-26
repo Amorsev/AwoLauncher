@@ -64,7 +64,7 @@
   <data name="Theme" xml:space="preserve"><value>Theme</value></data>
   <data name="Accent" xml:space="preserve"><value>Accent color (HEX)</value></data>
   <data name="Language" xml:space="preserve"><value>Language</value></data>
-  <data name="Background" xml:space="preserve"><value>Home background</value></data>
+  <data name="Background" xml:space="preserve"><value>Launcher background</value></data>
   <data name="ChooseImage" xml:space="preserve"><value>Choose image</value></data>
   <data name="Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="DataDirectory" xml:space="preserve"><value>Data and game folder location</value></data>
@@ -150,7 +150,7 @@
   <data name="ChooseProject" xml:space="preserve"><value>Select a project from the search results.</value></data>
   <data name="ChooseVersion" xml:space="preserve"><value>Select a project version.</value></data>
   <data name="ChooseInstance" xml:space="preserve"><value>Select an instance.</value></data>
-  <data name="PackInPlace" xml:space="preserve"><value>Install the modpack in '{0}'?&#10;Yes — selected instance. No — new instance.</value></data>
+  <data name="PackInPlace"><value>Where should the modpack be installed? The selected instance is {0}.</value></data>
   <data name="PackInNew" xml:space="preserve"><value>The selected instance contains files. Create a new instance for the modpack?</value></data>
   <data name="JsonError" xml:space="preserve"><value>Could not read JSON.</value></data>
 <data name="CatalogUnavailable"><value>Could not load the catalog. Check your connection.</value></data>
@@ -195,4 +195,42 @@
   <data name="OpenGalleryImage"><value>Open image</value></data>
   <data name="GalleryImageLoading"><value>Loading image…</value></data>
   <data name="GalleryImageFailed"><value>Could not load image</value></data>
+  <data name="ProjectVersionMismatch"><value>This version is incompatible with the active instance. Choose a compatible version.</value></data>
+  <data name="AccountPageIntro"><value>Minecraft profiles and player appearance.</value></data>
+  <data name="AccountEmpty"><value>Add an offline profile to customize a skin.</value></data>
+  <data name="PlayerSkin"><value>Player skin</value></data>
+  <data name="SkinImported"><value>The PNG skin is saved to this profile.</value></data>
+  <data name="SkinDefault"><value>Choose a 64 × 64 or 64 × 32 PNG.</value></data>
+  <data name="ImportSkin"><value>Import PNG</value></data>
+  <data name="SkinTarget"><value>Active instance</value></data>
+  <data name="ApplySkin"><value>Enable synchronization</value></data>
+  <data name="RemoveAppliedSkin"><value>Disable synchronization</value></data>
+  <data name="SkinScope"><value>Requires a compatible mod loader. Your skin stays local. The mod may query external skin services.</value></data>
+  <data name="ApplySkinConfirm"><value>Enable synchronization for {0}? The launcher will download CustomSkinLoader from Modrinth if needed.</value></data>
+  <data name="ReplaceGameSkin"><value>The local skin copy for this instance will be updated.</value></data>
+  <data name="RemoveGameSkinConfirm"><value>Disable synchronization for this profile and instance?</value></data>
+  <data name="GameSkinRemoved"><value>Synchronization is disabled.</value></data>
+  <data name="SkinApplied"><value>Synchronization with this instance is enabled.</value></data>
+  <data name="InvalidSkinPng"><value>Choose a valid 64 × 64 or 64 × 32 PNG.</value></data>
+  <data name="InvalidBackground"><value>Choose a PNG, JPEG or BMP under 24 MB and up to 8192 pixels on each side.</value></data>
+  <data name="FillBackground"><value>Fill</value></data>
+  <data name="FitBackground"><value>Fit</value></data>
+  <data name="BackgroundPreview"><value>Background preview</value></data>
+  <data name="BackgroundFit"><value>Fit mode</value></data>
+  <data name="BackgroundBlur"><value>Blur</value></data>
+  <data name="BackgroundShade"><value>Tint</value></data>
+  <data name="BackgroundWholeWindow"><value>Show background throughout the launcher</value></data>
+  <data name="Skins"><value>Skins</value></data>
+  <data name="SkinLibrary"><value>Wardrobe</value></data>
+  <data name="SkinSync"><value>Synchronization</value></data>
+  <data name="SavedSkins"><value>Saved skins</value></data>
+  <data name="UseDefaultSkin"><value>Default skin</value></data>
+  <data name="OpenSkins"><value>Open wardrobe</value></data>
+  <data name="OpenGallery"><value>Open gallery</value></data>
+  <data name="SkinLocalUsage"><value>Select a skin or drop a PNG here. Minecraft 1.20.2 and later apply it at launch through a local resource pack. Other players will see their own textures.</value></data>
+  <data name="SkinSyncIntro"><value>An optional Modrinth mod. Once connected, the selected modded instance receives the current profile skin at launch.</value></data>
+  <data name="InterfaceTransparency"><value>Interface transparency</value></data>
+  <data name="ConfirmAction"><value>Confirm action</value></data>
+  <data name="UseSelectedInstance"><value>Use selected instance</value></data>
+  <data name="SelectOptionalFiles"><value>Select the additional files to install.</value></data>
 </root>

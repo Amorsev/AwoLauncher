@@ -31,13 +31,15 @@ public sealed class ThemeService : IDisposable
     private ResourceDictionary? current;
     private string mode = "System";
     private Brush accent = Brushes.MediumSlateBlue;
+    private double transparency;
 
     public ThemeService() => SystemEvents.UserPreferenceChanged += PreferenceChanged;
 
-    public void Apply(string theme, string accentColor)
+    public void Apply(string theme, string accentColor, double interfaceTransparency)
     {
         mode = theme;
         accent = new SolidColorBrush((Color)ColorConverter.ConvertFromString(accentColor));
+        transparency = Math.Clamp(interfaceTransparency, 0, .6);
         Apply();
     }
 
@@ -54,15 +56,25 @@ public sealed class ThemeService : IDisposable
                 "AppsUseLightTheme", 1) as int? ?? 1) != 0;
         var resources = Application.Current.Resources;
         if (current is not null) resources.MergedDictionaries.Remove(current);
-        var variant = new ResourceDictionary
+        var palette = new ResourceDictionary
         {
             Source = new Uri($"/Launcher.UI;component/Themes/{(light ? "Light" : "Dark")}.xaml", UriKind.Relative)
         };
+        var variant = new ResourceDictionary();
+        variant.MergedDictionaries.Add(palette);
         variant["Accent"] = accent;
         variant["Primary"] = accent;
         var color = ((SolidColorBrush)accent).Color;
         var luminance = .2126 * Linear(color.R) + .7152 * Linear(color.G) + .0722 * Linear(color.B);
         variant["AccentText"] = luminance > .179 ? Brushes.Black : Brushes.White;
+        variant["DialogSurface"] = palette["Surface"];
+        foreach (var key in new[] { "Surface", "Soft", "InputSurface" })
+        {
+            var brush = ((Brush)palette[key]).Clone();
+            brush.Opacity = 1 - transparency;
+            brush.Freeze();
+            variant[key] = brush;
+        }
         resources.MergedDictionaries.Add(variant);
         current = variant;
     }

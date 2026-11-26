@@ -6,6 +6,8 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Themes/Light.xaml"/>
         <ResourceDictionary Source="Views/ShellViews.xaml"/>
+        <ResourceDictionary Source="Views/Accounts.xaml"/>
+        <ResourceDictionary Source="Views/Skins.xaml"/>
         <ResourceDictionary Source="Views/Catalog.xaml"/>
         <ResourceDictionary Source="Views/ProjectDetails.xaml"/>
         <ResourceDictionary Source="Views/InstanceWorkspace.xaml"/>

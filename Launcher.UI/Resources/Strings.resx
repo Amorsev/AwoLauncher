@@ -64,7 +64,7 @@
   <data name="Theme" xml:space="preserve"><value>Тема</value></data>
   <data name="Accent" xml:space="preserve"><value>Акцентный цвет (HEX)</value></data>
   <data name="Language" xml:space="preserve"><value>Язык</value></data>
-  <data name="Background" xml:space="preserve"><value>Фон главной</value></data>
+  <data name="Background" xml:space="preserve"><value>Фон лаунчера</value></data>
   <data name="ChooseImage" xml:space="preserve"><value>Выбрать изображение</value></data>
   <data name="Reset" xml:space="preserve"><value>Сбросить</value></data>
   <data name="DataDirectory" xml:space="preserve"><value>Путь к данным и игровым папкам</value></data>
@@ -150,7 +150,7 @@
   <data name="ChooseProject" xml:space="preserve"><value>Выберите проект в результатах поиска.</value></data>
   <data name="ChooseVersion" xml:space="preserve"><value>Выберите версию проекта.</value></data>
   <data name="ChooseInstance" xml:space="preserve"><value>Выберите экземпляр.</value></data>
-  <data name="PackInPlace" xml:space="preserve"><value>Установить модпак в «{0}»?&#10;Да — выбранный экземпляр. Нет — новый экземпляр.</value></data>
+  <data name="PackInPlace"><value>Куда установить модпак? Выбран экземпляр «{0}».</value></data>
   <data name="PackInNew" xml:space="preserve"><value>Выбранный экземпляр содержит файлы. Создать новый экземпляр для модпака?</value></data>
   <data name="JsonError" xml:space="preserve"><value>Не удалось прочитать JSON.</value></data>
 <data name="CatalogUnavailable"><value>Не удалось загрузить каталог. Проверьте подключение.</value></data>
@@ -195,4 +195,42 @@
   <data name="OpenGalleryImage"><value>Открыть изображение</value></data>
   <data name="GalleryImageLoading"><value>Загрузка изображения…</value></data>
   <data name="GalleryImageFailed"><value>Не удалось загрузить изображение</value></data>
+  <data name="ProjectVersionMismatch"><value>Эта версия не подходит активному экземпляру. Выберите совместимую версию.</value></data>
+  <data name="AccountPageIntro"><value>Профили Minecraft и внешний вид персонажа.</value></data>
+  <data name="AccountEmpty"><value>Добавьте офлайн-профиль, чтобы настроить скин.</value></data>
+  <data name="PlayerSkin"><value>Скин персонажа</value></data>
+  <data name="SkinImported"><value>PNG-скин сохранён в профиле.</value></data>
+  <data name="SkinDefault"><value>Выберите PNG размером 64 × 64 или 64 × 32.</value></data>
+  <data name="ImportSkin"><value>Импорт PNG</value></data>
+  <data name="SkinTarget"><value>Активный экземпляр</value></data>
+  <data name="ApplySkin"><value>Подключить синхронизацию</value></data>
+  <data name="RemoveAppliedSkin"><value>Отключить синхронизацию</value></data>
+  <data name="SkinScope"><value>Нужен совместимый загрузчик модов. Свой скин хранится локально. Мод может обращаться к внешним сервисам за скинами других игроков.</value></data>
+  <data name="ApplySkinConfirm"><value>Подключить синхронизацию для «{0}»? Лаунчер скачает CustomSkinLoader с Modrinth, если мод ещё не установлен.</value></data>
+  <data name="ReplaceGameSkin"><value>Локальная копия скина для этого экземпляра будет обновлена.</value></data>
+  <data name="RemoveGameSkinConfirm"><value>Отключить синхронизацию скина для этого профиля и экземпляра?</value></data>
+  <data name="GameSkinRemoved"><value>Синхронизация отключена.</value></data>
+  <data name="SkinApplied"><value>Синхронизация с экземпляром подключена.</value></data>
+  <data name="InvalidSkinPng"><value>Выберите корректный PNG размером 64 × 64 или 64 × 32.</value></data>
+  <data name="InvalidBackground"><value>Выберите PNG, JPEG или BMP до 24 МБ и 8192 пикселей по каждой стороне.</value></data>
+  <data name="FillBackground"><value>Заполнить</value></data>
+  <data name="FitBackground"><value>Вписать</value></data>
+  <data name="BackgroundPreview"><value>Предпросмотр фона</value></data>
+  <data name="BackgroundFit"><value>Подгонка</value></data>
+  <data name="BackgroundBlur"><value>Размытие</value></data>
+  <data name="BackgroundShade"><value>Затемнение</value></data>
+  <data name="BackgroundWholeWindow"><value>Показывать фон во всём лаунчере</value></data>
+  <data name="Skins"><value>Скины</value></data>
+  <data name="SkinLibrary"><value>Гардероб</value></data>
+  <data name="SkinSync"><value>Синхронизация</value></data>
+  <data name="SavedSkins"><value>Сохранённые скины</value></data>
+  <data name="UseDefaultSkin"><value>Стандартный скин</value></data>
+  <data name="OpenSkins"><value>Открыть гардероб</value></data>
+  <data name="OpenGallery"><value>Открыть галерею</value></data>
+  <data name="SkinLocalUsage"><value>Выберите скин или перетащите PNG сюда. В Minecraft 1.20.2 и новее он применяется при запуске через локальный ресурспак. Другие игроки у себя его не увидят.</value></data>
+  <data name="SkinSyncIntro"><value>Опциональный мод Modrinth. После подключения экземпляр с загрузчиком будет получать актуальный скин профиля при запуске.</value></data>
+  <data name="InterfaceTransparency"><value>Прозрачность интерфейса</value></data>
+  <data name="ConfirmAction"><value>Подтвердите действие</value></data>
+  <data name="UseSelectedInstance"><value>В выбранный экземпляр</value></data>
+  <data name="SelectOptionalFiles"><value>Отметьте дополнительные файлы, которые нужно установить.</value></data>
 </root>

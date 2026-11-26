@@ -14,17 +14,36 @@
     <Setter Property="Padding" Value="16"/>
     <Setter Property="Margin" Value="0,0,0,12"/>
   </Style>
+  <Style x:Key="DefaultBackdrop" TargetType="Image">
+    <Setter Property="Stretch" Value="UniformToFill"/>
+    <Setter Property="Source" Value="/Launcher.UI;component/Assets/launcher-banner.jpg"/>
+    <Setter Property="Visibility" Value="Collapsed"/>
+  </Style>
   <DataTemplate x:Key="HomeView">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
       <StackPanel>
-        <Border CornerRadius="17" ClipToBounds="True" MinHeight="218" Margin="0,0,0,14" Background="{DynamicResource Hero}">
+        <Border CornerRadius="17" ClipToBounds="True" Height="230" Margin="0,0,0,14">
+          <Border.Style><Style TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource Hero}"/>
+            <Style.Triggers><DataTrigger Binding="{Binding HasWindowBackground}" Value="True">
+              <Setter Property="Background" Value="#55251748"/>
+            </DataTrigger></Style.Triggers>
+          </Style></Border.Style>
           <Grid>
             <Grid.OpacityMask><VisualBrush><VisualBrush.Visual><Border Width="800" Height="240" CornerRadius="17" Background="White"/></VisualBrush.Visual></VisualBrush></Grid.OpacityMask>
-            <Image Source="/Launcher.UI;component/Assets/launcher-banner.jpg" Stretch="UniformToFill"/>
-            <Image Source="{Binding BackgroundImage}" Stretch="UniformToFill" Opacity=".65" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-              <Image.Effect><BlurEffect Radius="10"/></Image.Effect>
+            <Image>
+              <Image.Style><Style TargetType="Image" BasedOn="{StaticResource DefaultBackdrop}"><Style.Triggers>
+                <DataTrigger Binding="{Binding BackgroundImage}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+              </Style.Triggers></Style></Image.Style>
             </Image>
-            <Grid Background="#50211840" Margin="0">
+            <Image Source="{Binding BackgroundImage}" Stretch="{Binding BackgroundStretch}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <Image.Style><Style TargetType="Image">
+                <Style.Triggers><DataTrigger Binding="{Binding HasWindowBackground}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
+              </Style></Image.Style>
+              <Image.Effect><BlurEffect Radius="{Binding BackgroundBlur}"/></Image.Effect>
+            </Image>
+            <Border Background="#140D2B" Opacity="{Binding BackgroundShade}"/>
+            <Grid>
               <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="244"/></Grid.ColumnDefinitions>
               <StackPanel Margin="22" VerticalAlignment="Center">
                 <TextBlock Text="{DynamicResource L_ActiveInstance}" FontSize="13" FontWeight="SemiBold" Foreground="#E7DCFF"/>
@@ -55,6 +74,7 @@
                     <TextBlock Text="{Binding AccountInitial}" Foreground="#241D42" FontWeight="Bold" FontSize="23"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Image Source="{Binding AvatarUrl}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                    <Image Source="{Binding LocalSkinHead}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                   </Grid>
                   <TextBlock Text="{DynamicResource L_ActiveAccount}" Foreground="#E7DCFF"/>
                   <TextBlock Text="{Binding AccountLabel}" Foreground="White" FontWeight="SemiBold" TextWrapping="Wrap"/>
@@ -89,7 +109,7 @@
         <Border Style="{StaticResource Tile}">
           <StackPanel>
             <DockPanel>
-              <Button DockPanel.Dock="Right" Content="{DynamicResource L_OpenFolder}" Command="{Binding OpenScreenshots}"/>
+              <Button DockPanel.Dock="Right" Content="{DynamicResource L_OpenGallery}" Command="{Binding OpenGallery}"/>
               <TextBlock Text="{DynamicResource L_Screenshots}" Style="{StaticResource Section}"/>
             </DockPanel>
             <TextBlock Text="{DynamicResource L_NoScreens}" Foreground="{DynamicResource Muted}">
@@ -113,7 +133,11 @@
   <DataTemplate x:Key="PreferencesView">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
       <StackPanel MaxWidth="950" HorizontalAlignment="Stretch">
-        <TextBlock Text="{DynamicResource L_Settings}" Style="{StaticResource Section}" Margin="0,0,0,12"/>
+        <DockPanel Margin="0,0,0,12">
+          <Button DockPanel.Dock="Right" Content="{DynamicResource L_Save}" Command="{Binding SavePreferences}"
+                  Style="{StaticResource PrimaryButton}" Margin="0"/>
+          <TextBlock Text="{DynamicResource L_Settings}" Style="{StaticResource Section}" VerticalAlignment="Center"/>
+        </DockPanel>
         <Border Style="{StaticResource Tile}">
           <StackPanel>
             <WrapPanel>
@@ -124,12 +148,49 @@
               <StackPanel Width="130"><TextBlock Text="{DynamicResource L_Language}" Style="{StaticResource FieldLabel}"/>
                 <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding PendingLanguage}"/></StackPanel>
             </WrapPanel>
-            <TextBlock Text="{DynamicResource L_Background}" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{DynamicResource L_Background}" Style="{StaticResource FieldLabel}" Margin="0,8,0,6"/>
+            <Border Height="133" Background="{DynamicResource Hero}" CornerRadius="10" Margin="0,0,0,8" ClipToBounds="True">
+              <Grid>
+                <Image>
+                  <Image.Style><Style TargetType="Image" BasedOn="{StaticResource DefaultBackdrop}"><Style.Triggers>
+                    <DataTrigger Binding="{Binding PendingBackgroundImage}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                  </Style.Triggers></Style></Image.Style>
+                </Image>
+                <Image Source="{Binding PendingBackgroundImage}" Stretch="{Binding PendingBackgroundStretch}">
+                  <Image.Effect><BlurEffect Radius="{Binding PendingBackgroundBlur}"/></Image.Effect>
+                </Image>
+                <Border Background="#140D2B" Opacity="{Binding PendingBackgroundShade}"/>
+                <TextBlock Text="{DynamicResource L_BackgroundPreview}" Foreground="White" FontWeight="SemiBold"
+                           VerticalAlignment="Bottom" Margin="12"/>
+              </Grid>
+            </Border>
             <WrapPanel>
-              <Button Content="{DynamicResource L_ChooseImage}" Command="{Binding BrowseBackground}"/>
+              <Button Content="{DynamicResource L_ChooseImage}" Command="{Binding BrowseBackground}" Style="{StaticResource SecondaryPixelButton}"/>
               <Button Content="{DynamicResource L_Reset}" Command="{Binding ClearBackground}"/>
-              <TextBlock Text="{Binding PendingBackground}" MaxWidth="380" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
             </WrapPanel>
+            <WrapPanel Margin="0,0,0,5">
+              <StackPanel Width="145">
+                <TextBlock Text="{DynamicResource L_BackgroundFit}" Style="{StaticResource FieldLabel}"/>
+                <ComboBox ItemsSource="{Binding BackgroundFits}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                          SelectedValue="{Binding PendingBackgroundFit}" AutomationProperties.Name="{DynamicResource L_BackgroundFit}"/>
+              </StackPanel>
+              <StackPanel Width="132" Margin="3,0,8,0">
+                <TextBlock Text="{DynamicResource L_BackgroundBlur}" Style="{StaticResource FieldLabel}"/>
+                <Slider Minimum="0" Maximum="24" Value="{Binding PendingBackgroundBlur}"
+                        AutomationProperties.Name="{DynamicResource L_BackgroundBlur}"/>
+              </StackPanel>
+              <StackPanel Width="132" Margin="3,0,0,0">
+                <TextBlock Text="{DynamicResource L_BackgroundShade}" Style="{StaticResource FieldLabel}"/>
+                <Slider Minimum="0" Maximum=".8" Value="{Binding PendingBackgroundShade}"
+                        AutomationProperties.Name="{DynamicResource L_BackgroundShade}"/>
+              </StackPanel>
+            </WrapPanel>
+            <CheckBox Content="{DynamicResource L_BackgroundWholeWindow}" IsChecked="{Binding PendingBackgroundWindow}" Margin="0,0,0,7"/>
+            <StackPanel IsEnabled="{Binding CanSetInterfaceTransparency}" Margin="0,0,0,7">
+              <TextBlock Text="{DynamicResource L_InterfaceTransparency}" Style="{StaticResource FieldLabel}"/>
+              <Slider Minimum="0" Maximum=".6" TickFrequency=".05" IsSnapToTickEnabled="True" Width="220" HorizontalAlignment="Left"
+                      Value="{Binding PendingInterfaceTransparency}" AutomationProperties.Name="{DynamicResource L_InterfaceTransparency}"/>
+            </StackPanel>
             <TextBlock Text="{DynamicResource L_DataDirectory}" Style="{StaticResource FieldLabel}"/>
             <TextBox Text="{Binding PendingDirectory, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="{DynamicResource L_Retention}" Style="{StaticResource FieldLabel}"/>
@@ -138,7 +199,6 @@
             <TextBlock Text="{DynamicResource L_DiscordId}" Style="{StaticResource FieldLabel}"/>
             <TextBox Text="{Binding PendingDiscordId, UpdateSourceTrigger=PropertyChanged}" Width="245" HorizontalAlignment="Left"/>
             <CheckBox Content="{DynamicResource L_ExternalAvatars}" IsChecked="{Binding PendingAvatars}" Margin="0,6,0,10"/>
-            <Button Content="{DynamicResource L_Save}" Command="{Binding SavePreferences}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left"/>
           </StackPanel>
         </Border>
         <Border Style="{StaticResource Tile}">

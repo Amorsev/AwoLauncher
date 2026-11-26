@@ -67,9 +67,15 @@ public sealed partial class MainViewModel
             if (section == value) return;
             section = value;
             Notify();
+            Notify(nameof(PageTitle));
             if (value == 1 && !catalogLoaded && !CatalogBusy) QueueCatalog();
         }
     }
+    public string PageTitle => T(Section switch
+    {
+        1 => "Catalog", 2 => "Instances", 3 => "Accounts", 4 => "Settings", 5 => "InstanceSettings",
+        6 => "Skins", 7 => "Screenshots", _ => "Play"
+    });
     public bool HasNoInstance => SelectedInstance is null;
     public string WindowTitle => SelectedInstance is { } instance ? $"AwoLauncher · {instance.Name}" : "AwoLauncher";
     public string ActiveMetadata => SelectedInstance is { } instance
@@ -96,7 +102,6 @@ public sealed partial class MainViewModel
     public string PendingAccent { get; set; } = "#6944D2";
     public string PendingLanguage { get; set; } = "ru";
     public string? PendingBackground { get; private set; }
-    public Uri? BackgroundImage => LocalImage(settingsService.Current.Background);
     public string PendingDirectory { get; set; } = "";
     public bool PendingDiscord { get; set; }
     public bool PendingAvatars { get; set; }
@@ -148,6 +153,7 @@ public sealed partial class MainViewModel
     {
         settingsService = preferences;
         instancesService = new(data);
+        InitializeAccountAppearance();
         packUpdates = new(data, api, game, defaults);
         launcherUpdates = new(http, defaults.UpdateFeed);
         FilteredLog = CollectionViewSource.GetDefaultView(Log);
@@ -228,36 +234,63 @@ public sealed partial class MainViewModel
             OpenFile(folder);
             return Task.CompletedTask;
         }, () => SelectedInstance is not null);
-        BrowseBackground = new ActionCommand(() => { if (PickImage() is { } file) { PendingBackground = file; Notify(nameof(PendingBackground)); } }, () => !Busy);
-        ClearBackground = new ActionCommand(() => { PendingBackground = null; Notify(nameof(PendingBackground)); }, () => !Busy);
-        SavePreferences = Command(_ =>
+        BrowseBackground = Command(async token =>
+        {
+            if (PickImage() is not { } file) return;
+            var preview = await Task.Run(() => DecodeSelected(file, false), token);
+            token.ThrowIfCancellationRequested();
+            PendingBackground = file;
+            PendingBackgroundImage = preview;
+            Notify(nameof(PendingBackground));
+            Notify(nameof(PendingBackgroundImage));
+        });
+        ClearBackground = new ActionCommand(() =>
+        {
+            PendingBackground = null;
+            PendingBackgroundImage = null;
+            PendingBackgroundFit = "Fill";
+            PendingBackgroundBlur = 10;
+            PendingBackgroundShade = .36;
+            PendingBackgroundWindow = false;
+            PendingInterfaceTransparency = 0;
+            Notify(nameof(PendingBackground));
+            Notify(nameof(PendingBackgroundImage));
+            Notify(nameof(PendingBackgroundWindow));
+            Notify(nameof(PendingInterfaceTransparency));
+        }, () => !Busy);
+        SavePreferences = Command(async token =>
         {
             ParseAccent(PendingAccent);
             if (!int.TryParse(PendingRetention, out var days) || days is < 0 or > 3650)
                 throw new InvalidOperationException(T("InvalidRetention"));
             var directory = Path.GetFullPath(Environment.ExpandEnvironmentVariables(PendingDirectory.Trim()));
             var directoryChanged = !directory.Equals(data.Root, StringComparison.OrdinalIgnoreCase);
-            settingsService.Save(new(PendingTheme, PendingAccent, PendingLanguage, PendingBackground, PendingDiscord,
-                PendingDiscordId.Trim(), days, directory, PendingAvatars));
+            var background = PendingBackground;
+            if (background != settingsService.Current.Background && PendingBackgroundImage is { } image)
+                background = await Task.Run(() => AppearanceImages.SaveImage(data, image, false), token);
+            token.ThrowIfCancellationRequested();
+            settingsService.Save(new(PendingTheme, PendingAccent, PendingLanguage, background, PendingDiscord,
+                PendingDiscordId.Trim(), days, directory, PendingAvatars, PendingBackgroundFit,
+                PendingBackgroundBlur, PendingBackgroundShade, PendingBackgroundWindow, PendingInterfaceTransparency));
             if (directoryChanged) toasts.Show(T("RestartDirectory"));
-            return Task.CompletedTask;
         });
         ChangeNick = Command(_ =>
         {
             var current = Account ?? throw new InvalidOperationException(T("NoAccount"));
-            var nickname = Nick.Trim();
+            var nickname = RenameAccountInput.Trim();
             if (!System.Text.RegularExpressions.Regex.IsMatch(nickname, @"\A[A-Za-z0-9_]{3,16}\z"))
                 throw new InvalidOperationException(T("InvalidNick"));
             if (Profiles.Any(profile => profile != current && profile.Nick.Equals(nickname, StringComparison.OrdinalIgnoreCase)))
                 throw new InvalidOperationException(T("DuplicateNick"));
-            var state = new ProfileState(Profiles.Select(profile => profile == current ? new Profile(nickname) : profile).ToArray(), nickname);
+            var state = new ProfileState(Profiles.Select(profile => profile == current ? profile with { Nick = nickname } : profile).ToArray(), nickname);
             data.SaveProfiles(state);
             RefreshAccounts(state);
             return Task.CompletedTask;
         }, () => Account is not null);
         DeleteAccount = Command(_ =>
         {
-            if (Account is not { } current || !Confirm(string.Format(T("DeleteAccountConfirm"), current.Nick)))
+            if (Account is not { } current || !Confirm(string.Format(T("DeleteAccountConfirm"), current.Nick),
+                T("DeleteAccount"), T("Remove"), true))
                 return Task.CompletedTask;
             var remaining = Profiles.Where(profile => profile != current).ToArray();
             var state = new ProfileState(remaining, remaining.FirstOrDefault()?.Nick);
@@ -409,6 +442,11 @@ public sealed partial class MainViewModel
         using var discordToken = new CancellationTokenSource();
         try
         {
+            try { await skinDeployment.SyncIfEnabledAsync(target, profile, token); }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException or InvalidDataException)
+            {
+                Append($"[WARN] CustomSkinLoader: {error.Message}");
+            }
             var exit = await game.LaunchAsync(target, data.Game(target.Id), profile, Progress(), GameLog, token, () =>
             {
                 started = DateTimeOffset.UtcNow;
@@ -427,7 +465,9 @@ public sealed partial class MainViewModel
                 toasts.Show(T("GameStarted"));
                 if (settingsService.Current.DiscordEnabled)
                     presence = PublishPresenceAsync(discord, target, discordToken.Token);
-            }, preferences.Java, playServer, playPort);
+            }, preferences.Java, playServer, playPort, profile.SkinPath is { } skin
+                ? slim => ReadImage(skin, true) is { } image ? AppearanceImages.GameSkin(image, slim) : null
+                : null);
             Append($"Minecraft · exit {exit}");
             if (exit != 0 && started is { } time)
             {
@@ -579,20 +619,21 @@ public sealed partial class MainViewModel
         PendingTheme = settings.Theme;
         PendingAccent = settings.Accent;
         PendingLanguage = settings.Language;
-        PendingBackground = settings.Background;
         PendingDirectory = settings.DataDirectory ?? data.Root;
         PendingDiscord = settings.DiscordEnabled;
         PendingAvatars = settings.ExternalAvatars;
         PendingDiscordId = settings.DiscordApplicationId;
         PendingRetention = settings.LogRetentionDays.ToString();
-        theme.Apply(settings.Theme, settings.Accent);
         localization.Apply(settings.Language);
+        LoadBackground(settings);
+        theme.Apply(settings.Theme, settings.Accent, HasWindowBackground ? PendingInterfaceTransparency : 0);
         LocalizeChoices();
         if (!Busy) SetStatus(T("Ready"), 0);
-        Notify(nameof(BackgroundImage));
+        Notify(nameof(SkinState));
         Notify(nameof(AvatarUrl));
         Notify(nameof(SkinUrl));
         Notify(nameof(AccountLabel));
+        Notify(nameof(PageTitle));
         Notify(nameof(JavaHint));
         Notify(nameof(Page));
         Notify(nameof(Breadcrumb));
@@ -633,33 +674,13 @@ public sealed partial class MainViewModel
 
     private static MessageBoxResult ShowTextDialog(string title, string summary, string text, string primary, string? secondary)
     {
-        var result = MessageBoxResult.Cancel;
         var box = new System.Windows.Controls.TextBox
         {
-            Text = text, IsReadOnly = true, TextWrapping = TextWrapping.NoWrap,
+            Text = text, IsReadOnly = true, TextWrapping = TextWrapping.NoWrap, Height = 245,
             HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
             VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto
         };
-        var panel = new System.Windows.Controls.DockPanel { Margin = new Thickness(16) };
-        var header = new System.Windows.Controls.TextBlock { Text = summary, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 12) };
-        System.Windows.Controls.DockPanel.SetDock(header, System.Windows.Controls.Dock.Top);
-        panel.Children.Add(header);
-        var buttons = new System.Windows.Controls.WrapPanel();
-        System.Windows.Controls.DockPanel.SetDock(buttons, System.Windows.Controls.Dock.Bottom);
-        panel.Children.Add(buttons);
-        panel.Children.Add(box);
-        var dialog = new Window { Owner = Application.Current.MainWindow, Title = title, Width = 650, Height = 460,
-            WindowStartupLocation = WindowStartupLocation.CenterOwner, Content = panel };
-        void Add(string label, MessageBoxResult choice)
-        {
-            var button = new System.Windows.Controls.Button { Content = label };
-            button.Click += (_, _) => { result = choice; dialog.Close(); };
-            buttons.Children.Add(button);
-        }
-        Add(primary, MessageBoxResult.Yes);
-        if (secondary is not null) Add(secondary, MessageBoxResult.No);
-        dialog.ShowDialog();
-        return result;
+        return ActionDialog.Ask(title, summary, primary, secondary, details: box);
     }
 
     private void CleanOldLogs()
@@ -683,8 +704,6 @@ public sealed partial class MainViewModel
             ? new DirectoryInfo(path).EnumerateFiles("*.log*")
                 .Where(file => !file.Attributes.HasFlag(FileAttributes.ReparsePoint)) : [];
 
-    private static Uri? LocalImage(string? path) => path is not null && File.Exists(path) && Path.IsPathFullyQualified(path)
-        ? new Uri(path) : null;
     private static BitmapImage? LoadThumbnail(string path)
     {
         try
@@ -715,7 +734,10 @@ public sealed partial class MainViewModel
     private void SaveServers() => LocalData.Write(ServerFile, Servers.ToArray());
 }
 
-public sealed record ScreenshotItem(string Path, BitmapImage? Thumbnail);
+public sealed record ScreenshotItem(string Path, BitmapImage? Thumbnail)
+{
+    public string Name => System.IO.Path.GetFileName(Path);
+}
 public sealed record SavedServer(string Name, string Host, int Port)
 {
     public string Label => $"{Name} · {Host}:{Port}";

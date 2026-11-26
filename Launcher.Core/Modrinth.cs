@@ -16,9 +16,11 @@ public sealed record ProjectHit([property: JsonPropertyName("project_id")] strin
         .Select(item => item == "neoforge" ? "NeoForge" : char.ToUpperInvariant(item[0]) + item[1..]));
 }
 public sealed record SearchPage(ProjectHit[] Hits, [property: JsonPropertyName("total_hits")] int Total);
-public sealed record ProjectImage(string Url, bool Featured, string? Title)
+public sealed record ProjectImage(string Url, bool Featured, string? Title,
+    [property: JsonPropertyName("raw_url")] string? RawUrl = null)
 {
     public Uri? Image => Modrinth.CdnImage(Url);
+    public Uri? OriginalImage => Modrinth.CdnImage(RawUrl) ?? Image;
 }
 public sealed record Project(string Id, string Title, string Description, string Body,
     [property: JsonPropertyName("project_type")] string Type,

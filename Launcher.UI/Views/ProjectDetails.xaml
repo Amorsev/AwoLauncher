@@ -97,6 +97,9 @@
           <ComboBox ItemsSource="{Binding Instances}" SelectedItem="{Binding SelectedInstance}" DisplayMemberPath="Name" Width="156"
                     AutomationProperties.Name="{DynamicResource L_TargetInstance}"/>
           <Button Content="{DynamicResource L_Install}" Command="{Binding Install}" Style="{StaticResource PrimaryButton}"/>
+          <TextBlock Text="{DynamicResource L_ProjectVersionMismatch}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap"
+                     Margin="0,0,4,7" VerticalAlignment="Center"
+                     Visibility="{Binding ShowVersionMismatch, Converter={StaticResource BoolVisibility}}"/>
         </WrapPanel>
       </Border>
     </Grid>

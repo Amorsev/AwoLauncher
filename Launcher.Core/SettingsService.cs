@@ -2,7 +2,9 @@ namespace Launcher.Core;
 
 public sealed record UserSettings(string Theme = "System", string Accent = "#6944D2", string Language = "ru",
     string? Background = null, bool DiscordEnabled = false, string DiscordApplicationId = "",
-    int LogRetentionDays = 30, string? DataDirectory = null, bool ExternalAvatars = false);
+    int LogRetentionDays = 30, string? DataDirectory = null, bool ExternalAvatars = false,
+    string BackgroundFit = "Fill", double BackgroundBlur = 10, double BackgroundShade = .36, bool BackgroundWindow = false,
+    double InterfaceTransparency = 0);
 
 public sealed class SettingsService
 {

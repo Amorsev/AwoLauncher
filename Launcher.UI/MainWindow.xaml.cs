@@ -23,6 +23,15 @@ public partial class MainWindow : Window
         else SystemCommands.MaximizeWindow(this);
     }
     private void CloseWindow(object sender, RoutedEventArgs e) => Close();
+    private void ToggleLog(object sender, RoutedEventArgs e) =>
+        LogDrawer.Visibility = LogDrawer.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+
+    private void FocusCreation(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is true)
+            _ = Dispatcher.InvokeAsync(() => { if (CreationOverlay.IsVisible) CreationName.Focus(); },
+                System.Windows.Threading.DispatcherPriority.Input);
+    }
 
     private void OnLogChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
@@ -65,25 +74,38 @@ public partial class MainWindow : Window
     private void PreviewFiles(object sender, DragEventArgs e)
     {
         if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
-        e.Effects = DataContext is MainViewModel { Busy: false } &&
+        e.Effects = DataContext is MainViewModel { Busy: false, ShowCreation: false } vm &&
                     DroppedFiles(e.Data).Any(path => Path.GetExtension(path).Equals(".mrpack", StringComparison.OrdinalIgnoreCase) ||
-                                                     Path.GetExtension(path).Equals(".jar", StringComparison.OrdinalIgnoreCase))
+                        Path.GetExtension(path).Equals(".jar", StringComparison.OrdinalIgnoreCase) ||
+                        vm.Section == 6 && vm.SkinSection == 0 && vm.HasAccount &&
+                        Path.GetExtension(path).Equals(".png", StringComparison.OrdinalIgnoreCase))
             ? DragDropEffects.Copy : DragDropEffects.None;
         e.Handled = true;
     }
 
     private async void DropFiles(object sender, DragEventArgs e)
     {
+        if (DataContext is MainViewModel { ShowCreation: true }) { e.Handled = true; return; }
         if (DataContext is MainViewModel viewModel && e.Data.GetDataPresent(DataFormats.FileDrop))
         {
             e.Handled = true;
-            await viewModel.DropAsync(DroppedFiles(e.Data));
+            var paths = DroppedFiles(e.Data);
+            if (viewModel.Section == 6 && viewModel.SkinSection == 0 && viewModel.HasAccount &&
+                paths.FirstOrDefault(path => Path.GetExtension(path).Equals(".png", StringComparison.OrdinalIgnoreCase)) is { } skin)
+                await viewModel.DropSkinAsync(skin);
+            else await viewModel.DropAsync(paths);
         }
     }
 
     private void HandleShortcut(object sender, KeyEventArgs e)
     {
-        if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || DataContext is not MainViewModel viewModel) return;
+        if (DataContext is not MainViewModel viewModel) return;
+        if (viewModel.ShowCreation)
+        {
+            if (e.Key == Key.Escape) { viewModel.CloseCreation.Execute(null); e.Handled = true; }
+            return;
+        }
+        if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) return;
         if (e.Key == Key.Tab)
         {
             if (viewModel.CycleInstance.CanExecute(null)) viewModel.CycleInstance.Execute(null);
@@ -101,12 +123,9 @@ public partial class MainWindow : Window
         if (DataContext is not MainViewModel viewModel) return;
         string Read(string key) => TryFindResource("L_" + key) as string ?? key;
         List<PaletteEntry> entries = [];
-        var sections = new[] { "Play", "Catalog", "Instances", "Accounts", "Settings" };
-        for (int index = 0; index < sections.Length; index++)
-        {
-            var page = index;
-            entries.Add(new(Read(sections[index]), () => viewModel.Section = page));
-        }
+        foreach (var (key, page) in new[] { ("Play", 0), ("Catalog", 1), ("Instances", 2), ("Accounts", 3),
+                     ("Settings", 4), ("Skins", 6), ("Screenshots", 7) })
+            entries.Add(new(Read(key), () => viewModel.Section = page));
         entries.AddRange(viewModel.Instances.Select(instance => new PaletteEntry($"{instance.Name} · {instance.GameVersion}", () =>
         {
             viewModel.SelectedInstance = instance;

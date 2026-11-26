@@ -21,4 +21,6 @@
     </LinearGradientBrush>
     <DropShadowEffect x:Key="PanelShadow" Color="#543F84" BlurRadius="24" ShadowDepth="6" Opacity=".15"/>
     <SolidColorBrush x:Key="InputSurface" Color="#FFFFFF"/><SolidColorBrush x:Key="AccentText" Color="#FFFFFF"/><SolidColorBrush x:Key="DangerSurface" Color="#FFF0F3"/><SolidColorBrush x:Key="DangerText" Color="#922949"/>
+  <SolidColorBrush x:Key="DescriptionLink" Color="#2559A5"/>
+  <SolidColorBrush x:Key="PageGlass" Color="#EBFCFAFF"/>
 </ResourceDictionary>

@@ -77,7 +77,19 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
     public string Sort { get => sort; set { if (value is not null) SetCatalogFilter(ref sort, value); } }
     public ProjectHit? Hit { get; set; }
     private ModVersion? selectedVersion;
-    public ModVersion? Version { get => selectedVersion; set { selectedVersion = value; Notify(nameof(Breadcrumb)); CommandManager.InvalidateRequerySuggested(); } }
+    public ModVersion? Version
+    {
+        get => selectedVersion;
+        set
+        {
+            if (selectedVersion == value) return;
+            selectedVersion = value;
+            Notify();
+            Notify(nameof(Breadcrumb));
+            Notify(nameof(ShowVersionMismatch));
+            CommandManager.InvalidateRequerySuggested();
+        }
+    }
     public InstalledFile? Mod { get; set; }
     public Project? Details { get; private set; }
     public string[] LoaderVersions { get; private set; } = [];
@@ -104,6 +116,7 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
             account = value;
             Notify();
             Notify(nameof(AccountLabel)); Notify(nameof(AccountInitial)); Notify(nameof(AvatarUrl)); Notify(nameof(SkinUrl));
+            RefreshAccountAppearance();
             if (!refreshingProfiles && value is not null)
                 TryLocal(() => data.SaveProfiles(new(Profiles.ToArray(), value.Nick)));
         }
@@ -116,6 +129,8 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
         {
             if (selectedInstance == value) return;
             selectedInstance = value;
+            Notify(nameof(ShowVersionMismatch));
+            Notify(nameof(HasAppliedSkin));
             RenameTo = value?.Name ?? "";
             Notify();
             Notify(nameof(RenameTo));
@@ -192,7 +207,7 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
         Delete = Command(_ =>
         {
             var instance = RequireInstance();
-            if (Confirm(string.Format(T("DeleteInstanceConfirm"), instance.Name)))
+            if (Confirm(string.Format(T("DeleteInstanceConfirm"), instance.Name), T("DeleteInstance"), T("Remove"), true))
             {
                 instancesService.Delete(instance);
                 RefreshInstances(null);
@@ -231,7 +246,7 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
             {
                 Owner = Application.Current.MainWindow
             }.ShowDialog();
-        }, image => image.Image is not null);
+        }, image => image.OriginalImage is not null);
         OpenProjectSite = new ActionCommand(() =>
         {
             if (Details is { Type: "mod" or "modpack" or "resourcepack" or "shader" } project)
@@ -256,7 +271,8 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
             var project = Details ?? throw new InvalidOperationException(T("ChooseProject"));
             var version = Version ?? throw new InvalidOperationException(T("ChooseVersion"));
             await InstallProjectAsync(project, version, SelectedInstance, token);
-        }, () => Details is not null && Version is not null && (Details.Type == "modpack" || SelectedInstance is not null));
+        }, () => Details is not null && Version is not null && !ShowVersionMismatch &&
+                 (Details.Type == "modpack" || SelectedInstance is not null));
         ImportPack = Command(async token =>
         {
             var dialog = new OpenFileDialog { Filter = "Модпаки Modrinth (*.mrpack)|*.mrpack", CheckFileExists = true };
@@ -277,6 +293,8 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
     public bool HasCatalogError => CatalogError is not null;
     public bool CatalogEmpty => catalogLoaded && !CatalogBusy && !HasCatalogError && Hits.Count == 0;
     public bool HasDetails => Details is not null;
+    public bool ShowVersionMismatch => Details is { Type: not "modpack" } project &&
+        Version is { } version && SelectedInstance is { } instance && !Modrinth.Compatible(version, instance, project.Type);
     private CancellationTokenSource? projectRequest;
     public bool ProjectLoading => projectRequest is not null;
     public string? ProjectAuthor { get; private set; }
@@ -297,11 +315,10 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
             Details = await project;
             ProjectAuthor = author;
             Versions = (await versions).OrderByDescending(item => item.Published).ToArray();
-            Version = PreferredVersion(Versions, Details, SelectedInstance);
             Notify(nameof(Details));
             Notify(nameof(ProjectAuthor));
             Notify(nameof(Versions));
-            Notify(nameof(Version));
+            Version = RankVersions(Versions).FirstOrDefault();
             Notify(nameof(Breadcrumb));
             Notify(nameof(HasDetails));
         }
@@ -331,11 +348,14 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
 
     private static ModVersion? PreferredVersion(IEnumerable<ModVersion> versions, Project project, Instance? target)
     {
-        var ranked = versions.OrderBy(item => item.Type == "release" ? 0 : 1).ThenByDescending(item => item.Published);
+        var ranked = RankVersions(versions);
         var matching = target is null ? null : ranked.FirstOrDefault(item => Modrinth.Compatible(item, target, project.Type) &&
             (project.Type != "modpack" || item.Loaders.Contains(target.Loader.ToString(), StringComparer.OrdinalIgnoreCase)));
         return matching ?? (project.Type == "modpack" ? ranked.FirstOrDefault() : null);
     }
+
+    private static IOrderedEnumerable<ModVersion> RankVersions(IEnumerable<ModVersion> versions) =>
+        versions.OrderBy(item => item.Type == "release" ? 0 : 1).ThenByDescending(item => item.Published);
 
     private async Task InstallProjectAsync(Project project, ModVersion version, Instance? target, CancellationToken token)
     {
@@ -423,8 +443,8 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
         {
             if (data.IsEmpty(selected.Id))
             {
-                var choice = MessageBox.Show(string.Format(T("PackInPlace"), selected.Name),
-                    "AwoLauncher", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                var choice = ActionDialog.Ask(T("Install"), string.Format(T("PackInPlace"), selected.Name),
+                    T("UseSelectedInstance"), T("NewInstance"));
                 if (choice == MessageBoxResult.Cancel) return;
                 if (choice == MessageBoxResult.Yes) target = selected;
             }
@@ -496,16 +516,13 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
 
     private HashSet<string>? ChooseFiles(PackFile[] files)
     {
-        var list = new System.Windows.Controls.ListBox { SelectionMode = System.Windows.Controls.SelectionMode.Multiple, ItemsSource = files.Select(file => file.Path) };
-        var button = new System.Windows.Controls.Button { Content = T("Continue"), IsDefault = true };
-        var panel = new System.Windows.Controls.DockPanel { Margin = new Thickness(16) };
-        System.Windows.Controls.DockPanel.SetDock(button, System.Windows.Controls.Dock.Bottom);
-        panel.Children.Add(button);
-        panel.Children.Add(list);
-        var dialog = new Window { Title = T("ChooseOptional"), Width = 600, Height = 380, Content = panel,
-            Owner = Application.Current.MainWindow, WindowStartupLocation = WindowStartupLocation.CenterOwner };
-        button.Click += (_, _) => dialog.DialogResult = true;
-        return dialog.ShowDialog() == true ? list.SelectedItems.Cast<string>().ToHashSet() : null;
+        var list = new System.Windows.Controls.ListBox
+        {
+            SelectionMode = System.Windows.Controls.SelectionMode.Multiple, ItemsSource = files.Select(file => file.Path),
+            MaxHeight = 260
+        };
+        return ActionDialog.Ask(T("ChooseOptional"), T("SelectOptionalFiles"), T("Continue"), details: list) == MessageBoxResult.Yes
+            ? list.SelectedItems.Cast<string>().ToHashSet() : null;
     }
 
     private void RefreshAccounts(ProfileState state)
@@ -550,8 +567,9 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
     }
 
     private Instance RequireInstance() => SelectedInstance ?? throw new InvalidOperationException(T("ChooseInstance"));
-    private static bool Confirm(string text) =>
-        MessageBox.Show(text, "AwoLauncher", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+    private bool Confirm(string text, string? title = null, string? primary = null, bool destructive = false, string? warning = null) =>
+        ActionDialog.Ask(title ?? T("ConfirmAction"), text, primary ?? T("Continue"), destructive: destructive, warning: warning)
+        == MessageBoxResult.Yes;
 
     private ICommand Command(Func<CancellationToken, Task> work, Func<bool>? enabled = null) =>
         new AsyncCommand(() => RunAsync(work), () => !Busy && (enabled?.Invoke() ?? true));

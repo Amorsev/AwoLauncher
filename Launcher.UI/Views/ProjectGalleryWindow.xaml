@@ -12,7 +12,8 @@
     <Border Grid.Row="1" Background="{DynamicResource InputSurface}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
       <Grid SizeChanged="ResizePhoto">
         <ScrollViewer x:Name="Viewport" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-          <Image x:Name="Photo" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" ImageFailed="PhotoFailed">
+          <Image x:Name="Photo" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+                 RenderOptions.BitmapScalingMode="HighQuality">
             <Image.LayoutTransform><ScaleTransform x:Name="PhotoScale" ScaleX="1" ScaleY="1"/></Image.LayoutTransform>
           </Image>
         </ScrollViewer>

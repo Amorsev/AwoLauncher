@@ -235,12 +235,55 @@
         <Setter.Value>
           <ControlTemplate TargetType="TabControl">
             <DockPanel KeyboardNavigation.TabNavigation="Local">
-              <StackPanel DockPanel.Dock="Left" IsItemsHost="True" Width="146" Margin="0,4,12,0"
+              <StackPanel DockPanel.Dock="Left" IsItemsHost="True" Width="137" Margin="0,4,10,0"
                           KeyboardNavigation.DirectionalNavigation="Contained"/>
-              <Border Background="{DynamicResource Surface}" CornerRadius="16" Padding="12"
+              <Border x:Name="PageFrame" Background="{DynamicResource Surface}" CornerRadius="16" Padding="14"
                       BorderThickness="1" BorderBrush="{DynamicResource Line}" Effect="{DynamicResource PanelShadow}">
                 <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
               </Border>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+              <Trigger Property="Tag" Value="True"><Setter TargetName="PageFrame" Property="Background" Value="{DynamicResource PageGlass}"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="ShellTab" TargetType="TabItem">
+      <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+      <Setter Property="ToolTipService.Placement" Value="Left"/>
+      <Setter Property="ToolTipService.InitialShowDelay" Value="260"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TabItem">
+            <Border x:Name="ButtonSurface" Height="38" Margin="0,0,0,3" CornerRadius="8"
+                    Background="Transparent" BorderBrush="Transparent" BorderThickness="1">
+              <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ButtonSurface" Property="Background" Value="{DynamicResource Soft}"/>
+              </Trigger>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="ButtonSurface" Property="Background" Value="{DynamicResource Primary}"/>
+                <Setter Property="Foreground" Value="{DynamicResource AccentText}"/>
+              </Trigger>
+              <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter TargetName="ButtonSurface" Property="BorderBrush" Value="{DynamicResource Accent}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="WorkspaceTabs" TargetType="TabControl">
+      <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TabControl">
+            <DockPanel KeyboardNavigation.TabNavigation="Local">
+              <TabPanel DockPanel.Dock="Top" IsItemsHost="True" Margin="0,0,0,8"/>
+              <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
             </DockPanel>
           </ControlTemplate>
         </Setter.Value>

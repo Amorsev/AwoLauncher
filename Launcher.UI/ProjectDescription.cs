@@ -19,6 +19,11 @@ public sealed class ProjectDescription : FlowDocumentScrollViewer
         "script", "style", "iframe", "object", "embed", "form", "textarea", "button",
         "meta", "link", "template", "svg", "math", "video", "audio"
     };
+    private static readonly HashSet<string> ImageHosts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "cdn.modrinth.com", "i.ibb.co", "img.youtube.com", "i.ytimg.com",
+        "raw.githubusercontent.com", "user-images.githubusercontent.com", "github.githubassets.com"
+    };
 
     public static readonly DependencyProperty MarkdownProperty = DependencyProperty.Register(nameof(Markdown), typeof(string),
         typeof(ProjectDescription), new PropertyMetadata(null, (sender, args) =>
@@ -160,11 +165,24 @@ public sealed class ProjectDescription : FlowDocumentScrollViewer
         {
             var source = WebUtility.HtmlDecode(node.GetAttributeValue("src", ""));
             var alternative = WebUtility.HtmlDecode(node.GetAttributeValue("alt", ""));
-            if (SafeHttp(source) is { Host: "cdn.modrinth.com", Scheme: "https" } uri)
+            if (SafeHttp(source) is { Scheme: "https" } uri && ImageHosts.Contains(uri.Host))
             {
-                var image = new Image { Source = new BitmapImage(uri), MaxWidth = 640, MaxHeight = 300, Stretch = Stretch.Uniform };
+                var image = new Image
+                {
+                    MaxWidth = ImageLimit(node, "width", 800),
+                    MaxHeight = ImageLimit(node, "height", uri.Host == "i.ibb.co" && inLink ? 34 : 450),
+                    Stretch = Stretch.Uniform,
+                    StretchDirection = StretchDirection.DownOnly
+                };
+                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
                 System.Windows.Automation.AutomationProperties.SetName(image, alternative);
-                target.Add(new InlineUIContainer(image));
+                var container = new InlineUIContainer(image) { BaselineAlignment = BaselineAlignment.Center };
+                void ShowAlternative() => container.Child = new TextBlock { Text = alternative };
+                image.ImageFailed += (_, _) => ShowAlternative();
+                try { image.Source = new BitmapImage(uri); }
+                catch (Exception e) when (e is System.IO.IOException or ArgumentException or NotSupportedException)
+                { ShowAlternative(); }
+                target.Add(container);
             }
             else if (!string.IsNullOrWhiteSpace(alternative)) target.Add(new Run(alternative));
             return;
@@ -196,7 +214,7 @@ public sealed class ProjectDescription : FlowDocumentScrollViewer
     private static Hyperlink Link(Uri uri)
     {
         var link = new Hyperlink { NavigateUri = uri, ToolTip = uri.AbsoluteUri };
-        link.SetResourceReference(TextElement.ForegroundProperty, "Accent");
+        link.SetResourceReference(TextElement.ForegroundProperty, "DescriptionLink");
         link.RequestNavigate += (_, args) =>
         {
             args.Handled = true;
@@ -213,4 +231,6 @@ public sealed class ProjectDescription : FlowDocumentScrollViewer
         && uri.Scheme is "https" or "http" && uri.UserInfo.Length == 0 ? uri : null;
     private static bool Ignore(HtmlNode node) => node.NodeType == HtmlNodeType.Comment || Ignored.Contains(node.Name);
     private static Paragraph NewParagraph() => new() { Margin = new Thickness(0, 0, 0, 8) };
+    private static double ImageLimit(HtmlNode node, string attribute, double maximum) =>
+        int.TryParse(node.GetAttributeValue(attribute, ""), out var size) && size > 0 ? Math.Min(size, maximum) : maximum;
 }

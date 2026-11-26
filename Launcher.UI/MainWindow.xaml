@@ -11,7 +11,18 @@
     <shell:WindowChrome CaptionHeight="43" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="0"/>
   </shell:WindowChrome.WindowChrome>
   <Grid>
-    <Grid.RowDefinitions><RowDefinition Height="46"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="110"/></Grid.RowDefinitions>
+    <Grid x:Name="Shell">
+    <Grid.Style><Style TargetType="Grid"><Style.Triggers>
+      <DataTrigger Binding="{Binding ShowCreation}" Value="True"><Setter Property="IsEnabled" Value="False"/></DataTrigger>
+    </Style.Triggers></Style></Grid.Style>
+    <Grid.RowDefinitions><RowDefinition Height="46"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Grid Grid.RowSpan="5" IsHitTestVisible="False" ClipToBounds="True"
+          Visibility="{Binding HasWindowBackground, Converter={StaticResource BoolVisibility}}">
+      <Image Source="{Binding BackgroundImage}" Stretch="{Binding BackgroundStretch}">
+        <Image.Effect><BlurEffect Radius="{Binding BackgroundBlur}"/></Image.Effect>
+      </Image>
+      <Border Background="{DynamicResource DialogSurface}" Opacity="{Binding BackgroundShade}"/>
+    </Grid>
     <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1">
       <DockPanel LastChildFill="True" Margin="12,3,5,2">
         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
@@ -21,7 +32,9 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
           <Image Width="24" Height="24" Margin="0,0,8,0" Source="Assets/awo-launcher.ico"/>
-          <TextBlock Text="{Binding WindowTitle}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+          <TextBlock Text="AwoLauncher" Foreground="{DynamicResource Ink}" FontWeight="Bold" VerticalAlignment="Center"/>
+          <TextBlock Text="›" Foreground="{DynamicResource Muted}" Margin="12,0,8,1" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding PageTitle}" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
         </StackPanel>
       </DockPanel>
     </Border>
@@ -33,11 +46,17 @@
       </StackPanel>
       <TextBlock Text="{Binding SelectedInstance.Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Foreground="{DynamicResource Muted}"/>
     </DockPanel>
-    <Grid Grid.Row="2" Margin="10,0,0,0">
-      <Grid.ColumnDefinitions><ColumnDefinition Width="49"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-      <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="9" Padding="3">
+    <TabControl Grid.Row="2" x:Name="Pages" Margin="16,0" SelectedIndex="{Binding Section, Mode=TwoWay}" TabStripPlacement="Right" SelectionChanged="AnimatePage">
+      <TabControl.Template>
+        <ControlTemplate TargetType="TabControl">
+          <DockPanel KeyboardNavigation.TabNavigation="Local">
+            <Border DockPanel.Dock="Right" Width="49" Margin="10,0,0,0" Padding="4"
+                    Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="10">
+              <DockPanel>
+                <StackPanel DockPanel.Dock="Top" IsItemsHost="True" Margin="0,0,0,4"/>
+      <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="0,5,0,0">
         <DockPanel>
-          <Button DockPanel.Dock="Bottom" Command="{Binding NewInstance}" ToolTip="{DynamicResource L_NewInstance}"
+          <Button DockPanel.Dock="Bottom" Command="{Binding NewInstance}" ToolTip="{DynamicResource L_NewInstance}" ToolTipService.Placement="Left"
                   AutomationProperties.Name="{DynamicResource L_NewInstance}" Style="{StaticResource PrimaryButton}" Margin="1,5,1,1" Padding="6">
             <Image Source="Assets/UI-v2/Icons/add-24.png" Width="20" Height="20"/>
           </Button>
@@ -45,7 +64,7 @@
             <ItemsControl ItemsSource="{Binding RecentInstances}">
               <ItemsControl.ItemTemplate><DataTemplate>
                 <Button Command="{Binding DataContext.SelectRecent, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                        CommandParameter="{Binding}" ToolTip="{Binding Name}" AutomationProperties.Name="{Binding Name}"
+                        CommandParameter="{Binding}" ToolTip="{Binding Name}" ToolTipService.Placement="Left" AutomationProperties.Name="{Binding Name}"
                         Padding="4" Margin="0,0,0,4">
                   <Grid Width="27" Height="27" ClipToBounds="True">
                     <Image Source="Assets/instance-cover.png" Stretch="UniformToFill"/>
@@ -59,67 +78,23 @@
           </ScrollViewer>
         </DockPanel>
       </Border>
-    <TabControl Grid.Column="1" x:Name="Pages" Margin="10,0,16,0" SelectedIndex="{Binding Section, Mode=TwoWay}"
-                TabStripPlacement="Left" SelectionChanged="AnimatePage">
-      <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Image Source="Assets/UI-v2/Icons/play-24.png" Width="18" Height="18" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="NearestNeighbor"/><TextBlock Text="{DynamicResource L_Play}"/></StackPanel></TabItem.Header><ContentControl Content="{Binding}" ContentTemplate="{StaticResource HomeView}" TextElement.Foreground="{DynamicResource Ink}"/></TabItem>
-      <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Image Source="Assets/UI-v2/Icons/catalog-24.png" Width="18" Height="18" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="NearestNeighbor"/><TextBlock Text="{DynamicResource L_Catalog}"/></StackPanel></TabItem.Header>
+              </DockPanel>
+            </Border>
+            <Border Background="{DynamicResource Surface}" CornerRadius="16" Padding="14" BorderThickness="1"
+                    BorderBrush="{DynamicResource Line}" Effect="{DynamicResource PanelShadow}">
+              <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+            </Border>
+          </DockPanel>
+        </ControlTemplate>
+      </TabControl.Template>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Play}" AutomationProperties.Name="{DynamicResource L_Play}"><TabItem.Header><Image Source="Assets/UI-v2/Icons/play-24.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="NearestNeighbor"/></TabItem.Header><ContentControl Content="{Binding}" ContentTemplate="{StaticResource HomeView}" TextElement.Foreground="{DynamicResource Ink}"/></TabItem>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Catalog}" AutomationProperties.Name="{DynamicResource L_Catalog}"><TabItem.Header><Image Source="Assets/UI-v2/Icons/catalog-24.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="NearestNeighbor"/></TabItem.Header>
         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CatalogView}"/>
       </TabItem>
-      <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Image Source="Assets/UI-v2/Icons/instances-24.png" Width="18" Height="18" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="NearestNeighbor"/><TextBlock Text="{DynamicResource L_Instances}"/></StackPanel></TabItem.Header>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Instances}" AutomationProperties.Name="{DynamicResource L_Instances}"><TabItem.Header><Image Source="Assets/UI-v2/Icons/instances-24.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="NearestNeighbor"/></TabItem.Header>
         <Grid Margin="8" TextElement.Foreground="{DynamicResource Ink}">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Border Width="254" Background="{DynamicResource Soft}" CornerRadius="12" Padding="14" Margin="0,0,14,0" Visibility="{Binding ShowCreation, Converter={StaticResource BoolVisibility}}">
-            <DockPanel>
-              <WrapPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
-                <Button Content="{DynamicResource L_Create}" Command="{Binding CreateInstance}" Style="{StaticResource PrimaryButton}" Margin="0,0,6,0"/>
-                <Button Content="{DynamicResource L_ImportPack}" Command="{Binding ImportPack}" Style="{StaticResource SecondaryPixelButton}" Margin="0"/>
-              </WrapPanel>
-              <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                  <DockPanel Margin="0,0,0,9"><Button DockPanel.Dock="Right" Content="×" Command="{Binding CloseCreation}" ToolTip="{DynamicResource L_Close}" Margin="4,0,0,0" Padding="5" MinHeight="24"/><TextBlock Text="{DynamicResource L_NewInstance}" Style="{StaticResource Section}" TextWrapping="Wrap"/></DockPanel>
-                  <TextBlock Text="{DynamicResource L_Name}"/>
-                  <TextBox Text="{Binding InstanceName, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Name}"/>
-                  <Grid>
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions>
-                    <StackPanel>
-                      <TextBlock Text="{DynamicResource L_MinecraftVersion}"/>
-                      <TextBox Text="{Binding GameVersion, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_MinecraftVersion}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                      <TextBlock Text="{DynamicResource L_Ram}"/>
-                      <TextBox Text="{Binding Ram, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Ram}"/>
-                    </StackPanel>
-                  </Grid>
-                  <TextBlock Text="{DynamicResource L_Loader}"/>
-                  <ComboBox x:Name="LoaderSelector" ItemsSource="{Binding Loaders}" SelectedItem="{Binding NewLoader}" AutomationProperties.Name="{DynamicResource L_Loader}"/>
-                  <StackPanel>
-                    <StackPanel.Style>
-                      <Style TargetType="StackPanel">
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding SelectedItem, ElementName=LoaderSelector}" Value="{x:Static core:Loader.Vanilla}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </StackPanel.Style>
-                    <TextBlock Text="{DynamicResource L_LoaderVersion}"/>
-                    <ComboBox IsTextSearchEnabled="True" ItemsSource="{Binding LoaderVersions}"
-                              SelectedItem="{Binding LoaderVersion}" AutomationProperties.Name="{DynamicResource L_LoaderVersion}"/>
-                    <ProgressBar Height="4" IsIndeterminate="True" Foreground="{DynamicResource Accent}"
-                                 Visibility="{Binding LoaderVersionsBusy, Converter={StaticResource BoolVisibility}}"/>
-                    <TextBlock Text="{Binding LoaderVersionStatus}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
-                    <Button Content="{DynamicResource L_RetryCatalog}" Command="{Binding FindLoaders}" Style="{StaticResource SecondaryPixelButton}"
-                            Visibility="{Binding CanRetryLoaders, Converter={StaticResource BoolVisibility}}"/>
-                  </StackPanel>
-                </StackPanel>
-              </ScrollViewer>
-            </DockPanel>
-          </Border>
-          <Grid Grid.Column="1">
-            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+          <Grid>
+<Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
             <DockPanel Margin="0,0,0,6">
               <Button DockPanel.Dock="Right" Command="{Binding NewInstance}" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0">
                 <StackPanel Orientation="Horizontal">
@@ -227,38 +202,31 @@
           </Grid>
         </Grid>
       </TabItem>
-      <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Image Source="Assets/UI-v2/Icons/account-24.png" Width="18" Height="18" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="NearestNeighbor"/><TextBlock Text="{DynamicResource L_Accounts}"/></StackPanel></TabItem.Header>
-        <Border HorizontalAlignment="Left" Width="350" Margin="8" Padding="16" CornerRadius="12" Background="{DynamicResource Soft}"
-                TextElement.Foreground="{DynamicResource Ink}">
-          <StackPanel>
-            <TextBlock Text="{DynamicResource L_OfflineAccount}" Style="{StaticResource Section}" Margin="0,0,0,10"/>
-            <TextBlock Text="{DynamicResource L_Nick}"/>
-            <TextBox Text="{Binding Nick, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Nick}"/>
-            <Button Content="{DynamicResource L_AddAccount}" Command="{Binding AddProfile}" HorizontalAlignment="Left" Style="{StaticResource PrimaryButton}"/>
-            <WrapPanel>
-            <Button Content="{DynamicResource L_ChangeNick}" Command="{Binding ChangeNick}"/>
-            <Button Content="{DynamicResource L_DeleteAccount}" Command="{Binding DeleteAccount}" Style="{StaticResource DangerButton}"/>
-          </WrapPanel>
-          <Image Source="{Binding SkinUrl}" Height="96" Stretch="Uniform" HorizontalAlignment="Left"/>
-          <ListBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding Account}" DisplayMemberPath="Nick" MinHeight="75" AutomationProperties.Name="{DynamicResource L_Accounts}"/>
-          </StackPanel>
-        </Border>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Accounts}" AutomationProperties.Name="{DynamicResource L_Accounts}"><TabItem.Header><Image Source="Assets/UI-v2/Icons/account-24.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="NearestNeighbor"/></TabItem.Header>
+        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountsView}"/>
       </TabItem>
-      <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><TextBlock FontFamily="{StaticResource IconFont}" FontSize="16" Text="&#xE713;" Margin="0,0,10,0"/><TextBlock Text="{DynamicResource L_Settings}"/></StackPanel></TabItem.Header><ContentControl Content="{Binding}" ContentTemplate="{StaticResource PreferencesView}" TextElement.Foreground="{DynamicResource Ink}"/></TabItem>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Settings}" AutomationProperties.Name="{DynamicResource L_Settings}"><TabItem.Header><TextBlock FontFamily="{DynamicResource IconFont}" FontSize="18" Text="&#xE713;"/></TabItem.Header><ContentControl Content="{Binding}" ContentTemplate="{StaticResource PreferencesView}" TextElement.Foreground="{DynamicResource Ink}"/></TabItem>
       <TabItem Style="{StaticResource HiddenTab}" Header="{DynamicResource L_InstanceSettings}">
         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource InstanceWorkspaceView}" TextElement.Foreground="{DynamicResource Ink}"/>
       </TabItem>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Skins}" AutomationProperties.Name="{DynamicResource L_Skins}"><TabItem.Header><TextBlock FontFamily="{DynamicResource IconFont}" FontSize="18" Text="&#xE77B;"/></TabItem.Header>
+        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SkinsView}"/>
+      </TabItem>
+      <TabItem Style="{StaticResource ShellTab}" ToolTip="{DynamicResource L_Screenshots}" AutomationProperties.Name="{DynamicResource L_Screenshots}"><TabItem.Header><TextBlock FontFamily="{DynamicResource IconFont}" FontSize="18" Text="&#xEB9F;"/></TabItem.Header>
+        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ScreenshotsView}"/>
+      </TabItem>
     </TabControl>
-    </Grid>
     <DockPanel Grid.Row="3" Margin="16,9,16,5">
       <Button DockPanel.Dock="Right" Content="{DynamicResource L_Cancel}" Margin="10,0,0,0" Command="{Binding Cancel}"/>
+      <Button DockPanel.Dock="Right" Click="ToggleLog" Content="{DynamicResource L_Logs}" AutomationProperties.Name="{DynamicResource L_Logs}"
+              Margin="10,0,0,0"/>
       <StackPanel VerticalAlignment="Center">
         <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Margin="0,0,0,4"/>
         <ProgressBar Minimum="0" Maximum="100" Height="4" Foreground="{DynamicResource Accent}"
                      Value="{Binding ProgressValue, Mode=OneWay}" IsIndeterminate="{Binding Indeterminate, Mode=OneWay}"/>
       </StackPanel>
     </DockPanel>
-    <Border Grid.Row="4" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1"
+    <Border x:Name="LogDrawer" Grid.Row="4" Height="105" Visibility="Collapsed" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1"
             CornerRadius="10" Padding="8,4" Margin="16,0,16,10">
       <DockPanel>
         <DockPanel DockPanel.Dock="Top">
@@ -271,10 +239,62 @@
       </DockPanel>
     </Border>
     <Border Grid.RowSpan="5" Panel.ZIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-            Margin="0,0,24,124" Padding="14,9" MaxWidth="360" CornerRadius="9" IsHitTestVisible="False"
+            Margin="0,0,24,55" Padding="14,9" MaxWidth="360" CornerRadius="9" IsHitTestVisible="False"
             Background="{DynamicResource Accent}" Style="{StaticResource ToastPanel}"
             Visibility="{Binding HasToast, Converter={StaticResource BoolVisibility}}">
       <TextBlock Text="{Binding Toast}" Foreground="{DynamicResource AccentText}" TextWrapping="Wrap"/>
     </Border>
+    </Grid>
+          <Grid x:Name="CreationOverlay" Panel.ZIndex="10" KeyboardNavigation.TabNavigation="Cycle" IsVisibleChanged="FocusCreation"
+                shell:WindowChrome.IsHitTestVisibleInChrome="True" Visibility="{Binding ShowCreation, Converter={StaticResource BoolVisibility}}">
+            <Border Background="#A8151126"/>
+          <Border Width="410" MaxHeight="485" Background="{DynamicResource DialogSurface}" CornerRadius="16" BorderBrush="{DynamicResource Line}" BorderThickness="1" Padding="18" Margin="14" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="{DynamicResource PanelShadow}">
+            <DockPanel>
+              <WrapPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                <Button Content="{DynamicResource L_Create}" Command="{Binding CreateInstance}" Style="{StaticResource PrimaryButton}" Margin="0,0,6,0"/>
+                <Button Content="{DynamicResource L_ImportPack}" Command="{Binding ImportPack}" Style="{StaticResource SecondaryPixelButton}" Margin="0"/>
+              </WrapPanel>
+              <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                  <DockPanel Margin="0,0,0,9"><Button DockPanel.Dock="Right" Content="×" Command="{Binding CloseCreation}" ToolTip="{DynamicResource L_Close}" Margin="4,0,0,0" Padding="5" MinHeight="24"/><TextBlock Text="{DynamicResource L_NewInstance}" Style="{StaticResource Section}" TextWrapping="Wrap"/></DockPanel>
+                  <TextBlock Text="{DynamicResource L_Name}"/>
+                  <TextBox x:Name="CreationName" Text="{Binding InstanceName, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Name}"/>
+                  <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions>
+                    <StackPanel>
+                      <TextBlock Text="{DynamicResource L_MinecraftVersion}"/>
+                      <TextBox Text="{Binding GameVersion, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_MinecraftVersion}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                      <TextBlock Text="{DynamicResource L_Ram}"/>
+                      <TextBox Text="{Binding Ram, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Ram}"/>
+                    </StackPanel>
+                  </Grid>
+                  <TextBlock Text="{DynamicResource L_Loader}"/>
+                  <ComboBox x:Name="LoaderSelector" ItemsSource="{Binding Loaders}" SelectedItem="{Binding NewLoader}" AutomationProperties.Name="{DynamicResource L_Loader}"/>
+                  <StackPanel>
+                    <StackPanel.Style>
+                      <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding SelectedItem, ElementName=LoaderSelector}" Value="{x:Static core:Loader.Vanilla}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="{DynamicResource L_LoaderVersion}"/>
+                    <ComboBox IsTextSearchEnabled="True" ItemsSource="{Binding LoaderVersions}"
+                              SelectedItem="{Binding LoaderVersion}" AutomationProperties.Name="{DynamicResource L_LoaderVersion}"/>
+                    <ProgressBar Height="4" IsIndeterminate="True" Foreground="{DynamicResource Accent}"
+                                 Visibility="{Binding LoaderVersionsBusy, Converter={StaticResource BoolVisibility}}"/>
+                    <TextBlock Text="{Binding LoaderVersionStatus}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
+                    <Button Content="{DynamicResource L_RetryCatalog}" Command="{Binding FindLoaders}" Style="{StaticResource SecondaryPixelButton}"
+                            Visibility="{Binding CanRetryLoaders, Converter={StaticResource BoolVisibility}}"/>
+                  </StackPanel>
+                </StackPanel>
+              </ScrollViewer>
+            </DockPanel>
+          </Border>
+          </Grid>
   </Grid>
 </Window>

@@ -36,29 +36,43 @@ public partial class ProjectGalleryWindow : Window
         Viewport.ScrollToHome();
         Photo.Source = null;
         bitmap = null;
-        if (entry.Image is not { } uri)
+        if (entry.OriginalImage is not { } uri)
         {
             Status.Text = Label("GalleryImageFailed");
             return;
         }
 
+        LoadImage(uri, entry.Image != uri ? entry.Image : null);
+    }
+
+    private void LoadImage(Uri uri, Uri? fallback)
+    {
         Status.Text = Label("GalleryImageLoading");
+        var image = new BitmapImage();
+        bitmap = image;
+        void Failed()
+        {
+            if (bitmap != image) return;
+            bitmap = null;
+            Photo.Source = null;
+            if (fallback is not null) LoadImage(fallback, null);
+            else Status.Text = Label("GalleryImageFailed");
+        }
         try
         {
-            var image = new BitmapImage();
-            bitmap = image;
             image.BeginInit();
             image.UriSource = uri;
-            image.DecodePixelWidth = 2880;
             image.DownloadCompleted += (_, _) => { if (bitmap == image) Status.Text = ""; };
-            image.DownloadFailed += (_, _) => { if (bitmap == image) Status.Text = Label("GalleryImageFailed"); };
+            image.DownloadFailed += (_, _) => Failed();
+            image.DecodeFailed += (_, _) => Failed();
             image.EndInit();
+            if (bitmap != image) return;
             Photo.Source = image;
             if (!image.IsDownloading && image.PixelWidth > 0) Status.Text = "";
         }
         catch (Exception error) when (error is IOException or NotSupportedException or ArgumentException)
         {
-            Status.Text = Label("GalleryImageFailed");
+            Failed();
         }
     }
 
@@ -82,7 +96,6 @@ public partial class ProjectGalleryWindow : Window
         Photo.Height = Math.Max(1, e.NewSize.Height - 4);
     }
 
-    private void PhotoFailed(object sender, ExceptionRoutedEventArgs e) => Status.Text = Label("GalleryImageFailed");
     private void Previous(object sender, RoutedEventArgs e) => Move(-1);
     private void Next(object sender, RoutedEventArgs e) => Move(1);
     private void ZoomOut(object sender, RoutedEventArgs e) => SetZoom(PhotoScale.ScaleX - .25);

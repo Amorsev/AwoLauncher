@@ -1,0 +1,86 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries><ResourceDictionary Source="../Styles/Controls.xaml"/></ResourceDictionary.MergedDictionaries>
+  <DataTemplate x:Key="AccountsView">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <Grid Margin="5,0,8,6" TextElement.Foreground="{DynamicResource Ink}" TextElement.FontWeight="Normal">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Grid.ColumnDefinitions><ColumnDefinition Width="250"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,12">
+          <TextBlock Text="{DynamicResource L_Accounts}" FontSize="25" FontWeight="Bold"/>
+          <TextBlock Text="{DynamicResource L_AccountPageIntro}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="1,3,0,0"/>
+        </StackPanel>
+        <Border Grid.Row="1" Padding="12" Background="{DynamicResource Soft}" CornerRadius="12" Margin="0,0,12,0">
+          <StackPanel>
+            <TextBlock Text="{DynamicResource L_OfflineAccount}" FontWeight="SemiBold" Margin="1,0,0,7"/>
+            <ListBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding Account}" BorderThickness="0" Background="Transparent"
+                     MaxHeight="232" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     AutomationProperties.Name="{DynamicResource L_Accounts}">
+              <ListBox.ItemTemplate><DataTemplate>
+                <DockPanel Margin="0,1">
+                  <Border DockPanel.Dock="Left" Width="30" Height="30" Background="{DynamicResource InputSurface}" CornerRadius="7" Margin="0,0,8,0">
+                    <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/account-24.png" Width="16" Height="16"/>
+                  </Border>
+                  <TextBlock Text="{Binding Nick}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                </DockPanel>
+              </DataTemplate></ListBox.ItemTemplate>
+            </ListBox>
+            <Border Height="1" Background="{DynamicResource Line}" Margin="0,10,0,10"/>
+            <TextBlock Text="{DynamicResource L_Nick}" Foreground="{DynamicResource Muted}"/>
+            <TextBox Text="{Binding Nick, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Nick}"
+                     Margin="0,4,0,8">
+              <TextBox.InputBindings><KeyBinding Key="Enter" Command="{Binding AddProfile}"/></TextBox.InputBindings>
+            </TextBox>
+            <Button Content="{DynamicResource L_AddAccount}" Command="{Binding AddProfile}" Style="{StaticResource PrimaryButton}" Margin="0"/>
+          </StackPanel>
+        </Border>
+        <Grid Grid.Row="1" Grid.Column="1">
+          <Border Background="{DynamicResource Soft}" CornerRadius="12" Padding="18" VerticalAlignment="Top">
+            <Border.Style><Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers><DataTrigger Binding="{Binding HasAccount}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+            </Style></Border.Style>
+            <TextBlock Text="{DynamicResource L_AccountEmpty}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap"/>
+          </Border>
+          <StackPanel Visibility="{Binding HasAccount, Converter={StaticResource BoolVisibility}}">
+            <Border Background="{DynamicResource Hero}" CornerRadius="12" Padding="16,13" Margin="0,0,0,10">
+              <DockPanel>
+                <Grid DockPanel.Dock="Left" Width="48" Height="48" Margin="0,0,12,0">
+                  <Border Background="#50FFFFFF" CornerRadius="9"/>
+                  <TextBlock Text="{Binding AccountInitial}" Foreground="White" FontWeight="Bold" FontSize="22"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  <Image Source="{Binding AvatarUrl}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                  <Image Source="{Binding LocalSkinHead}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </Grid>
+                <StackPanel VerticalAlignment="Center">
+                  <TextBlock Text="{Binding AccountLabel}" Foreground="White" FontSize="21" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Text="{DynamicResource L_ActiveAccount}" Foreground="#E7DCFF" FontSize="12"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border Background="{DynamicResource Soft}" CornerRadius="12" Padding="13" Margin="0,0,0,10">
+              <DockPanel>
+                <Button DockPanel.Dock="Right" Content="{DynamicResource L_OpenSkins}" Command="{Binding OpenSkins}" VerticalAlignment="Center"
+                        Style="{StaticResource SecondaryPixelButton}"/>
+                <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
+                  <TextBlock Text="{DynamicResource L_PlayerSkin}" Style="{StaticResource Section}"/>
+                  <TextBlock Text="{Binding SkinState}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border Background="{DynamicResource Soft}" CornerRadius="12" Padding="13">
+              <StackPanel>
+                <TextBlock Text="{DynamicResource L_Nick}" Foreground="{DynamicResource Muted}"/>
+                <WrapPanel>
+                  <TextBox Text="{Binding RenameAccountInput, UpdateSourceTrigger=PropertyChanged}" Width="145"
+                           AutomationProperties.Name="{DynamicResource L_Nick}"/>
+                  <Button Content="{DynamicResource L_ChangeNick}" Command="{Binding ChangeNick}" Style="{StaticResource SecondaryPixelButton}"/>
+                  <Button Content="{DynamicResource L_DeleteAccount}" Command="{Binding DeleteAccount}" Style="{StaticResource DangerButton}"/>
+                </WrapPanel>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Grid>
+      </Grid>
+    </ScrollViewer>
+  </DataTemplate>
+</ResourceDictionary>

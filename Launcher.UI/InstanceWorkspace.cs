@@ -255,10 +255,7 @@ public sealed partial class MainViewModel
     }
 
     private bool ConfirmContentRemoval(string name, string warning) =>
-        new RemoveContentDialog(string.Format(T("RemoveModConfirm"), name), warning.Trim())
-        {
-            Owner = Application.Current.MainWindow
-        }.ShowDialog() == true;
+        Confirm(string.Format(T("RemoveModConfirm"), name), T("RemoveContentTitle"), T("Remove"), true, warning.Trim());
 }
 
 public sealed record WorkspaceFolder(Guid InstanceId, string Name, string Path);

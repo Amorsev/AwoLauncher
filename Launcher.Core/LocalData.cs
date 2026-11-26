@@ -5,7 +5,7 @@ namespace Launcher.Core;
 
 public enum Loader { Vanilla, Fabric, Forge, Quilt, NeoForge }
 
-public sealed record Profile(string Nick);
+public sealed record Profile(string Nick, string? SkinPath = null);
 public sealed record ProfileState(Profile[] Profiles, string? Selected);
 public sealed record Instance(Guid Id, string Name, string GameVersion, Loader Loader, string LoaderVersion, int Ram);
 public sealed record Activity(string Text, double? Percent = null);
