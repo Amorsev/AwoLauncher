@@ -155,7 +155,7 @@ public sealed partial class MainViewModel
         instancesService = new(data);
         InitializeAccountAppearance();
         packUpdates = new(data, api, game, defaults);
-        launcherUpdates = new(http, defaults.UpdateFeed);
+        launcherUpdates = new(http, defaults.UpdateFeed ?? UpdateService.GitHubFeed);
         FilteredLog = CollectionViewSource.GetDefaultView(Log);
         FilteredLog.Filter = item => LogLevel == "All" || item is string line && Severity(line) == LogLevel;
         toasts.Changed += (_, _) => { Notify(nameof(Toast)); Notify(nameof(HasToast)); };
@@ -252,7 +252,7 @@ public sealed partial class MainViewModel
             PendingBackgroundBlur = 10;
             PendingBackgroundShade = .36;
             PendingBackgroundWindow = false;
-            PendingInterfaceTransparency = 0;
+            PendingInterfaceTransparency = DefaultInterfaceTransparency;
             Notify(nameof(PendingBackground));
             Notify(nameof(PendingBackgroundImage));
             Notify(nameof(PendingBackgroundWindow));
@@ -406,7 +406,7 @@ public sealed partial class MainViewModel
             CommandManager.InvalidateRequerySuggested();
             toasts.Show(UpdateStatus);
         }
-        catch (Exception e) when (e is IOException or System.Net.Http.HttpRequestException or
+        catch (Exception e) when (e is IOException or InvalidDataException or System.Net.Http.HttpRequestException or
                                    OperationCanceledException or System.Text.Json.JsonException)
         {
             WriteLog("[WARN] " + e.Message);

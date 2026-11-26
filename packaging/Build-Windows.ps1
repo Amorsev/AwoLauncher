@@ -28,3 +28,11 @@ $checksums = foreach ($file in @("AwoLauncher.exe", "AwoLauncher-Setup.exe")) {
     "$($hash.Hash.ToLowerInvariant())  $file"
 }
 $checksums | Set-Content -LiteralPath (Join-Path $artifacts "SHA256SUMS.txt") -Encoding ascii
+
+$installer = Join-Path $artifacts "AwoLauncher-Setup.exe"
+$update = [ordered]@{
+    version = $version
+    url = "https://github.com/Amorsev/AwoLauncher/releases/download/v$version/AwoLauncher-Setup.exe"
+    sha512 = (Get-FileHash -LiteralPath $installer -Algorithm SHA512).Hash.ToLowerInvariant()
+}
+$update | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $artifacts "update.json") -Encoding ascii

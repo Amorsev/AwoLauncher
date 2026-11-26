@@ -188,8 +188,14 @@
             <CheckBox Content="{DynamicResource L_BackgroundWholeWindow}" IsChecked="{Binding PendingBackgroundWindow}" Margin="0,0,0,7"/>
             <StackPanel IsEnabled="{Binding CanSetInterfaceTransparency}" Margin="0,0,0,7">
               <TextBlock Text="{DynamicResource L_InterfaceTransparency}" Style="{StaticResource FieldLabel}"/>
-              <Slider Minimum="0" Maximum=".6" TickFrequency=".05" IsSnapToTickEnabled="True" Width="220" HorizontalAlignment="Left"
-                      Value="{Binding PendingInterfaceTransparency}" AutomationProperties.Name="{DynamicResource L_InterfaceTransparency}"/>
+              <StackPanel Orientation="Horizontal">
+                <Slider x:Name="InterfaceTransparencySlider" Minimum="{Binding MinimumInterfaceTransparency}"
+                        Maximum="{Binding MaximumInterfaceTransparency}" TickFrequency=".05" IsSnapToTickEnabled="True"
+                        Width="220" Value="{Binding PendingInterfaceTransparency}"
+                        AutomationProperties.Name="{DynamicResource L_InterfaceTransparency}"/>
+                <TextBlock Text="{Binding Value, ElementName=InterfaceTransparencySlider, StringFormat=P0}"
+                           Foreground="{DynamicResource Muted}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+              </StackPanel>
             </StackPanel>
             <TextBlock Text="{DynamicResource L_DataDirectory}" Style="{StaticResource FieldLabel}"/>
             <TextBox Text="{Binding PendingDirectory, UpdateSourceTrigger=PropertyChanged}"/>

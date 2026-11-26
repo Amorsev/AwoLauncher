@@ -39,7 +39,7 @@ public sealed class ThemeService : IDisposable
     {
         mode = theme;
         accent = new SolidColorBrush((Color)ColorConverter.ConvertFromString(accentColor));
-        transparency = Math.Clamp(interfaceTransparency, 0, .6);
+        transparency = Math.Clamp(interfaceTransparency, 0, 1);
         Apply();
     }
 

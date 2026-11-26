@@ -13,6 +13,9 @@ public sealed record SkinTile(SavedSkin Skin, ImageSource Preview, bool Active);
 
 public sealed partial class MainViewModel
 {
+    private const double DefaultInterfaceTransparency = .50;
+    public double MinimumInterfaceTransparency => .35;
+    public double MaximumInterfaceTransparency => .75;
     private SkinDeployment skinDeployment = null!;
     private ImageSource? localSkinHead;
     private ImageSource? localSkinBody;
@@ -55,7 +58,7 @@ public sealed partial class MainViewModel
         set { pendingBackgroundWindow = value; Notify(); Notify(nameof(CanSetInterfaceTransparency)); }
     }
     public bool CanSetInterfaceTransparency => PendingBackgroundWindow && PendingBackgroundImage is not null;
-    public double PendingInterfaceTransparency { get; set; }
+    public double PendingInterfaceTransparency { get; set; } = DefaultInterfaceTransparency;
     public Choice[] BackgroundFits => [new(T("FillBackground"), "Fill"), new(T("FitBackground"), "Fit")];
     public bool HasWindowBackground => settingsService.Current.BackgroundWindow && BackgroundImage is not null;
     public Stretch BackgroundStretch => ToStretch(settingsService.Current.BackgroundFit);
@@ -232,7 +235,10 @@ public sealed partial class MainViewModel
         PendingBackgroundBlur = Math.Clamp(settings.BackgroundBlur, 0, 24);
         PendingBackgroundShade = Math.Clamp(settings.BackgroundShade, 0, .8);
         PendingBackgroundWindow = settings.BackgroundWindow;
-        PendingInterfaceTransparency = Math.Clamp(settings.InterfaceTransparency, 0, .6);
+        // Version 1.2.0 saved zero by default even with the whole-window background enabled.
+        PendingInterfaceTransparency = settings.InterfaceTransparency > 0
+            ? Math.Clamp(settings.InterfaceTransparency, MinimumInterfaceTransparency, MaximumInterfaceTransparency)
+            : DefaultInterfaceTransparency;
         foreach (var property in new[] { nameof(BackgroundFits), nameof(BackgroundImage), nameof(PendingBackgroundImage),
             nameof(PendingBackground), nameof(PendingBackgroundWindow), nameof(HasWindowBackground), nameof(BackgroundStretch),
             nameof(BackgroundBlur), nameof(BackgroundShade), nameof(PendingInterfaceTransparency) }) Notify(property);
