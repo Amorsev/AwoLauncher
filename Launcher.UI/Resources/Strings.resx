@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Play" xml:space="preserve"><value>Играть</value></data>
+  <data name="Catalog" xml:space="preserve"><value>Каталог</value></data>
+  <data name="Instances" xml:space="preserve"><value>Экземпляры</value></data>
+  <data name="Accounts" xml:space="preserve"><value>Аккаунты</value></data>
+  <data name="Settings" xml:space="preserve"><value>Настройки</value></data>
+  <data name="InstanceSettings" xml:space="preserve"><value>Настройки экземпляра</value></data>
+  <data name="ActiveAccount" xml:space="preserve"><value>Активный аккаунт</value></data>
+  <data name="ActiveInstance" xml:space="preserve"><value>Активный экземпляр</value></data>
+  <data name="NoAccount" xml:space="preserve"><value>Выберите или создайте офлайн-аккаунт</value></data>
+  <data name="NoInstances" xml:space="preserve"><value>Нет экземпляров — создайте первый</value></data>
+  <data name="CreateFirst" xml:space="preserve"><value>Создать первый экземпляр</value></data>
+  <data name="NewInstance" xml:space="preserve"><value>Новый экземпляр</value></data>
+  <data name="Name" xml:space="preserve"><value>Название</value></data>
+  <data name="MinecraftVersion" xml:space="preserve"><value>Версия Minecraft</value></data>
+  <data name="Ram" xml:space="preserve"><value>RAM, МБ</value></data>
+  <data name="Loader" xml:space="preserve"><value>Загрузчик</value></data>
+  <data name="LoaderVersion" xml:space="preserve"><value>Версия загрузчика</value></data>
+  <data name="FetchVersions" xml:space="preserve"><value>Загрузить список версий</value></data>
+  <data name="Create" xml:space="preserve"><value>Создать</value></data>
+  <data name="ImportPack" xml:space="preserve"><value>Импорт .mrpack</value></data>
+  <data name="Rename" xml:space="preserve"><value>Переименовать</value></data>
+  <data name="DeleteInstance" xml:space="preserve"><value>Удалить экземпляр</value></data>
+  <data name="InstalledMods" xml:space="preserve"><value>Установленные моды</value></data>
+  <data name="DeleteMod" xml:space="preserve"><value>Удалить мод</value></data>
+  <data name="Search" xml:space="preserve"><value>Найти</value></data>
+  <data name="Previous" xml:space="preserve"><value>Назад</value></data>
+  <data name="Next" xml:space="preserve"><value>Далее</value></data>
+  <data name="OpenProject" xml:space="preserve"><value>Открыть проект</value></data>
+  <data name="TargetInstance" xml:space="preserve"><value>Целевой экземпляр</value></data>
+  <data name="Install" xml:space="preserve"><value>Установить</value></data>
+  <data name="OfflineAccount" xml:space="preserve"><value>Офлайн-аккаунт</value></data>
+  <data name="Nick" xml:space="preserve"><value>Никнейм</value></data>
+  <data name="AddAccount" xml:space="preserve"><value>Добавить аккаунт</value></data>
+  <data name="ChangeNick" xml:space="preserve"><value>Сменить ник</value></data>
+  <data name="DeleteAccount" xml:space="preserve"><value>Удалить аккаунт</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Отменить</value></data>
+  <data name="Logs" xml:space="preserve"><value>Журнал</value></data>
+  <data name="AutoScroll" xml:space="preserve"><value>Автопрокрутка</value></data>
+  <data name="Screenshots" xml:space="preserve"><value>Скриншоты</value></data>
+  <data name="OpenFolder" xml:space="preserve"><value>Открыть папку</value></data>
+  <data name="Servers" xml:space="preserve"><value>Серверы</value></data>
+  <data name="Add" xml:space="preserve"><value>Добавить</value></data>
+  <data name="Remove" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Ping" xml:space="preserve"><value>Пинг</value></data>
+  <data name="Connect" xml:space="preserve"><value>Подключиться</value></data>
+  <data name="TotalPlayTime" xml:space="preserve"><value>Общее время игры</value></data>
+  <data name="ModCount" xml:space="preserve"><value>Модов</value></data>
+  <data name="Size" xml:space="preserve"><value>Размер</value></data>
+  <data name="Duplicate" xml:space="preserve"><value>Дублировать</value></data>
+  <data name="Export" xml:space="preserve"><value>Экспорт ZIP</value></data>
+  <data name="SelectCover" xml:space="preserve"><value>Выбрать обложку</value></data>
+  <data name="Java" xml:space="preserve"><value>Java</value></data>
+  <data name="JavaAutomatic" xml:space="preserve"><value>Автоматический выбор Java</value></data>
+  <data name="FindJava" xml:space="preserve"><value>Найти Java</value></data>
+  <data name="JavaHint" xml:space="preserve"><value>Рекомендуется Java {0}</value></data>
+  <data name="RecommendedRam" xml:space="preserve"><value>Для большинства экземпляров подходит 4096 МБ</value></data>
+  <data name="Save" xml:space="preserve"><value>Сохранить</value></data>
+  <data name="Theme" xml:space="preserve"><value>Тема</value></data>
+  <data name="Accent" xml:space="preserve"><value>Акцентный цвет (HEX)</value></data>
+  <data name="Language" xml:space="preserve"><value>Язык</value></data>
+  <data name="Background" xml:space="preserve"><value>Фон главной</value></data>
+  <data name="ChooseImage" xml:space="preserve"><value>Выбрать изображение</value></data>
+  <data name="Reset" xml:space="preserve"><value>Сбросить</value></data>
+  <data name="DataDirectory" xml:space="preserve"><value>Путь к данным и игровым папкам</value></data>
+  <data name="Retention" xml:space="preserve"><value>Хранение логов, дней (0 — бессрочно)</value></data>
+  <data name="Discord" xml:space="preserve"><value>Discord Rich Presence</value></data>
+  <data name="DiscordId" xml:space="preserve"><value>Discord Application ID</value></data>
+  <data name="ExternalAvatars" xml:space="preserve"><value>Показывать аватары через mc-heads.net</value></data>
+  <data name="Updates" xml:space="preserve"><value>Обновление лаунчера</value></data>
+  <data name="CheckUpdates" xml:space="preserve"><value>Проверить обновления</value></data>
+  <data name="InstallUpdate" xml:space="preserve"><value>Установить обновление</value></data>
+  <data name="Pack" xml:space="preserve"><value>Модпак</value></data>
+  <data name="CheckPack" xml:space="preserve"><value>Проверить модпак</value></data>
+  <data name="UpdatePack" xml:space="preserve"><value>Обновить модпак</value></data>
+  <data name="Recommendations" xml:space="preserve"><value>Установить performance-моды</value></data>
+  <data name="UpdateAvailable" xml:space="preserve"><value>Доступно обновление</value></data>
+  <data name="UpToDate" xml:space="preserve"><value>Установлена актуальная версия</value></data>
+  <data name="NoPackOrigin" xml:space="preserve"><value>Обновление доступно для модпаков, установленных через каталог после этого обновления лаунчера.</value></data>
+  <data name="NoUpdateFeed" xml:space="preserve"><value>Укажите updateFeed в appsettings.json</value></data>
+  <data name="InstallLauncherConfirm" xml:space="preserve"><value>Запустить обновление и закрыть лаунчер?</value></data>
+  <data name="Ready" xml:space="preserve"><value>Готово</value></data>
+  <data name="Working" xml:space="preserve"><value>Выполняется операция…</value></data>
+  <data name="Cancelled" xml:space="preserve"><value>Операция отменена</value></data>
+  <data name="Installed" xml:space="preserve"><value>Установка завершена</value></data>
+  <data name="GameStarted" xml:space="preserve"><value>Minecraft запущен</value></data>
+  <data name="GameCrash" xml:space="preserve"><value>Minecraft завершился с ошибкой</value></data>
+  <data name="OpenLog" xml:space="preserve"><value>Открыть лог</value></data>
+  <data name="Copy" xml:space="preserve"><value>Скопировать</value></data>
+  <data name="CrashMemory" xml:space="preserve"><value>Игре не хватило памяти. Проверьте RAM экземпляра.</value></data>
+  <data name="CrashJava" xml:space="preserve"><value>Версия Java несовместима с игрой или модом.</value></data>
+  <data name="CrashMods" xml:space="preserve"><value>В журнале есть признаки конфликта модов.</value></data>
+  <data name="CrashGraphics" xml:space="preserve"><value>В журнале обнаружена ошибка графического драйвера или OpenGL.</value></data>
+  <data name="CrashUnknown" xml:space="preserve"><value>Причина не распознана. Проверьте последние строки журнала.</value></data>
+  <data name="InvalidJava" xml:space="preserve"><value>Укажите существующий java.exe / javaw.exe или оставьте поле пустым.</value></data>
+  <data name="InvalidRetention" xml:space="preserve"><value>Укажите срок хранения логов от 0 до 3650 дней.</value></data>
+  <data name="RestartDirectory" xml:space="preserve"><value>Новый каталог данных будет использован после перезапуска.</value></data>
+  <data name="InvalidNick" xml:space="preserve"><value>Ник должен содержать 3–16 латинских букв, цифр или _.</value></data>
+  <data name="DuplicateNick" xml:space="preserve"><value>Такой профиль уже существует.</value></data>
+  <data name="DeleteAccountConfirm" xml:space="preserve"><value>Удалить профиль «{0}»?</value></data>
+  <data name="InvalidServer" xml:space="preserve"><value>Введите адрес сервера в виде host или host:port.</value></data>
+  <data name="ServerUnavailable" xml:space="preserve"><value>Сервер недоступен</value></data>
+  <data name="NeedsLoader" xml:space="preserve"><value>Для установки модов выберите экземпляр с загрузчиком.</value></data>
+  <data name="InstallPerformanceConfirm" xml:space="preserve"><value>Установить совместимые версии Sodium, Lithium, FerriteCore и Iris?</value></data>
+  <data name="InvalidDrop" xml:space="preserve"><value>Перетащите файлы .mrpack или .jar.</value></data>
+  <data name="ConfirmJar" xml:space="preserve"><value>Установить файлов: {0} · {1}?</value></data>
+  <data name="ModDuplicate" xml:space="preserve"><value>Обнаружен дубликат мода</value></data>
+  <data name="ModLoaderConflict" xml:space="preserve"><value>Возможна несовместимость с загрузчиком</value></data>
+  <data name="ModGameConflict" xml:space="preserve"><value>Требуется другая версия Minecraft</value></data>
+  <data name="ModUnknown" xml:space="preserve"><value>Метаданные загрузчика не распознаны</value></data>
+  <data name="NoFileChanges" xml:space="preserve"><value>Файлы совпадают</value></data>
+  <data name="NoResults" xml:space="preserve"><value>Нет результатов</value></data>
+  <data name="PageFormat" xml:space="preserve"><value>{0}–{1} из {2}</value></data>
+  <data name="AllTypes" xml:space="preserve"><value>Все типы</value></data>
+  <data name="Mods" xml:space="preserve"><value>Моды</value></data>
+  <data name="Modpacks" xml:space="preserve"><value>Модпаки</value></data>
+  <data name="ResourcePacks" xml:space="preserve"><value>Ресурспаки</value></data>
+  <data name="Shaders" xml:space="preserve"><value>Шейдеры</value></data>
+  <data name="AllLoaders" xml:space="preserve"><value>Все загрузчики</value></data>
+  <data name="Relevance" xml:space="preserve"><value>Релевантность</value></data>
+  <data name="Downloads" xml:space="preserve"><value>Загрузки</value></data>
+  <data name="Follows" xml:space="preserve"><value>Подписки</value></data>
+  <data name="Updated" xml:space="preserve"><value>Дата обновления</value></data>
+  <data name="Newest" xml:space="preserve"><value>Дата создания</value></data>
+  <data name="SearchHint" xml:space="preserve"><value>Поисковый запрос</value></data>
+  <data name="ProjectType" xml:space="preserve"><value>Тип проекта</value></data>
+  <data name="Sort" xml:space="preserve"><value>Сортировка</value></data>
+  <data name="CommandPalette" xml:space="preserve"><value>Быстрый поиск</value></data>
+  <data name="Minimize" xml:space="preserve"><value>Свернуть</value></data>
+  <data name="Maximize" xml:space="preserve"><value>Развернуть или восстановить</value></data>
+  <data name="Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="ServerAddress" xml:space="preserve"><value>Адрес сервера</value></data>
+  <data name="Browse" xml:space="preserve"><value>Выбрать</value></data>
+  <data name="NoScreens" xml:space="preserve"><value>Скриншоты появятся после снимка в игре</value></data>
+  <data name="ChooseOptional" xml:space="preserve"><value>Дополнительные файлы</value></data>
+  <data name="Continue" xml:space="preserve"><value>Продолжить</value></data>
+  <data name="DeleteInstanceConfirm" xml:space="preserve"><value>Удалить «{0}» вместе с мирами и файлами?</value></data>
+  <data name="Timeout" xml:space="preserve"><value>Сервер не ответил вовремя.</value></data>
+  <data name="Network" xml:space="preserve"><value>Ошибка сети. Проверьте подключение.</value></data>
+  <data name="RateLimit" xml:space="preserve"><value>Сервис ограничил число запросов. Повторите попытку позже.</value></data>
+  <data name="RemoveModConfirm" xml:space="preserve"><value>Удалить {0}?</value></data>
+  <data name="Dependents" xml:space="preserve"><value>Его используют: {0}.</value></data>
+  <data name="RamInvalid" xml:space="preserve"><value>Введите объём RAM целым числом в мегабайтах.</value></data>
+  <data name="NoLoaders" xml:space="preserve"><value>Для этой версии Minecraft загрузчики не найдены.</value></data>
+  <data name="ChooseProject" xml:space="preserve"><value>Выберите проект в результатах поиска.</value></data>
+  <data name="ChooseVersion" xml:space="preserve"><value>Выберите версию проекта.</value></data>
+  <data name="ChooseInstance" xml:space="preserve"><value>Выберите экземпляр.</value></data>
+  <data name="PackInPlace" xml:space="preserve"><value>Установить модпак в «{0}»?&#10;Да — выбранный экземпляр. Нет — новый экземпляр.</value></data>
+  <data name="PackInNew" xml:space="preserve"><value>Выбранный экземпляр содержит файлы. Создать новый экземпляр для модпака?</value></data>
+  <data name="JsonError" xml:space="preserve"><value>Не удалось прочитать JSON.</value></data>
+<data name="CatalogUnavailable"><value>Не удалось загрузить каталог. Проверьте подключение.</value></data>
+  <data name="RetryCatalog"><value>Повторить</value></data>
+  <data name="ProjectVersions"><value>Версии проекта</value></data>
+  <data name="GameFilter"><value>Версия MC</value></data>
+  <data name="LoaderFetchError"><value>Не удалось загрузить версии. Проверьте подключение.</value></data>
+  <data name="InstanceContent"><value>Контент</value></data>
+  <data name="InstanceFiles"><value>Файлы</value></data>
+  <data name="InstanceWorlds"><value>Миры</value></data>
+  <data name="OpenInstance"><value>Открыть экземпляр</value></data>
+  <data name="AddFiles"><value>Добавить файлы</value></data>
+  <data name="FindProjects"><value>Найти проекты</value></data>
+  <data name="Reload"><value>Обновить</value></data>
+  <data name="InstalledProject"><value>Проект</value></data>
+  <data name="InstalledVersion"><value>Версия и файл</value></data>
+  <data name="RowActions"><value>Действия</value></data>
+  <data name="ToggleContent"><value>Включить или выключить файл</value></data>
+  <data name="EnabledContent"><value>Вкл.</value></data>
+  <data name="DisabledContent"><value>Выкл.</value></data>
+  <data name="DisableContent"><value>Выключить мод</value></data>
+  <data name="EmptyContent"><value>Здесь пока нет подходящих файлов</value></data>
+  <data name="NoWorlds"><value>В этом экземпляре пока нет миров</value></data>
+  <data name="WorkspaceHours"><value>Время игры · {0:0.0} ч</value></data>
+  <data name="LastPlayed"><value>Последний запуск · {0}</value></data>
+  <data name="NeverPlayed"><value>Ещё не запускался</value></data>
+  <data name="LoadingLoaderVersions"><value>Загружаем версии загрузчика…</value></data>
+  <data name="ChooseLoaderVersion"><value>Доступно версий: {0}. Выберите версию.</value></data>
+  <data name="SearchInstanceContent"><value>Поиск по контенту экземпляра</value></data>
+  <data name="BackToCatalog"><value>← К каталогу</value></data>
+  <data name="ProjectOverview"><value>Описание</value></data>
+  <data name="ProjectGallery"><value>Галерея</value></data>
+  <data name="NoProjectImages"><value>У проекта пока нет изображений</value></data>
+  <data name="RemoveContentTitle"><value>Удалить файл?</value></data>
+  <data name="InstallJava"><value>Установить Java</value></data>
+  <data name="NoCompatibleProjectVersion"><value>Для этого экземпляра нет совместимой версии проекта.</value></data>
+  <data name="RecentInstances"><value>Недавно запущенные</value></data>
+  <data name="InstanceLibrary"><value>Библиотека</value></data>
+  <data name="ZoomOut"><value>Уменьшить</value></data>
+  <data name="ZoomIn"><value>Увеличить</value></data>
+  <data name="ZoomFit"><value>Вписать в окно</value></data>
+  <data name="OpenGalleryImage"><value>Открыть изображение</value></data>
+  <data name="GalleryImageLoading"><value>Загрузка изображения…</value></data>
+  <data name="GalleryImageFailed"><value>Не удалось загрузить изображение</value></data>
+</root>

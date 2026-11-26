@@ -1,0 +1,16 @@
+<Application x:Class="Launcher.UI.App"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Themes/Light.xaml"/>
+        <ResourceDictionary Source="Views/ShellViews.xaml"/>
+        <ResourceDictionary Source="Views/Catalog.xaml"/>
+        <ResourceDictionary Source="Views/ProjectDetails.xaml"/>
+        <ResourceDictionary Source="Views/InstanceWorkspace.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

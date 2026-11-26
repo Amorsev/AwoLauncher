@@ -1,0 +1,195 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="../Styles/Controls.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <Style x:Key="FieldLabel" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Margin" Value="0,5,0,2"/>
+  </Style>
+  <Style x:Key="Tile" TargetType="Border">
+    <Setter Property="Background" Value="{DynamicResource Soft}"/>
+    <Setter Property="CornerRadius" Value="14"/>
+    <Setter Property="Padding" Value="16"/>
+    <Setter Property="Margin" Value="0,0,0,12"/>
+  </Style>
+  <DataTemplate x:Key="HomeView">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+      <StackPanel>
+        <Border CornerRadius="17" ClipToBounds="True" MinHeight="218" Margin="0,0,0,14" Background="{DynamicResource Hero}">
+          <Grid>
+            <Grid.OpacityMask><VisualBrush><VisualBrush.Visual><Border Width="800" Height="240" CornerRadius="17" Background="White"/></VisualBrush.Visual></VisualBrush></Grid.OpacityMask>
+            <Image Source="/Launcher.UI;component/Assets/launcher-banner.jpg" Stretch="UniformToFill"/>
+            <Image Source="{Binding BackgroundImage}" Stretch="UniformToFill" Opacity=".65" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <Image.Effect><BlurEffect Radius="10"/></Image.Effect>
+            </Image>
+            <Grid Background="#50211840" Margin="0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="244"/></Grid.ColumnDefinitions>
+              <StackPanel Margin="22" VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource L_ActiveInstance}" FontSize="13" FontWeight="SemiBold" Foreground="#E7DCFF"/>
+                <TextBlock Text="{Binding SelectedInstance.Name}" FontSize="33" Foreground="White" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding ActiveMetadata}" Foreground="#E7DCFF" Margin="0,4,0,10"/>
+                <TextBlock Text="{DynamicResource L_NoInstances}" Foreground="White" TextWrapping="Wrap"
+                           Visibility="{Binding HasNoInstance, Converter={StaticResource BoolVisibility}}" Margin="0,0,0,6"/>
+                <WrapPanel>
+                  <Button Style="{StaticResource PrimaryButton}" Content="{DynamicResource L_Play}" Command="{Binding Launch}" MinWidth="128" MinHeight="42"/>
+                  <Button Content="{DynamicResource L_OpenInstance}" Command="{Binding OpenInstance}" MinHeight="42">
+                    <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SecondaryPixelButton}">
+                      <Style.Triggers><DataTrigger Binding="{Binding HasNoInstance}" Value="True">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </DataTrigger></Style.Triggers>
+                    </Style></Button.Style>
+                  </Button>
+                  <Button Content="{DynamicResource L_CreateFirst}" Command="{Binding NewInstance}"
+                          Visibility="{Binding HasNoInstance, Converter={StaticResource BoolVisibility}}" MinHeight="42"/>
+                </WrapPanel>
+                <ProgressBar Height="5" Maximum="100" Value="{Binding ProgressValue, Mode=OneWay}"
+                             IsIndeterminate="{Binding Indeterminate, Mode=OneWay}" Foreground="{DynamicResource Accent}"/>
+              </StackPanel>
+              <Border Grid.Column="1" Margin="0,22,22,22" Padding="13" CornerRadius="12" Background="#55251748"
+                      BorderBrush="#66FFFFFF" BorderThickness="1" VerticalAlignment="Center">
+                <StackPanel>
+                  <Grid Width="48" Height="48" HorizontalAlignment="Left" Margin="0,0,0,8">
+                    <Border Background="#A66BE5DA" CornerRadius="12"/>
+                    <TextBlock Text="{Binding AccountInitial}" Foreground="#241D42" FontWeight="Bold" FontSize="23"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Source="{Binding AvatarUrl}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                  </Grid>
+                  <TextBlock Text="{DynamicResource L_ActiveAccount}" Foreground="#E7DCFF"/>
+                  <TextBlock Text="{Binding AccountLabel}" Foreground="White" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </Grid>
+        </Border>
+        <Border Style="{StaticResource Tile}">
+          <StackPanel>
+            <TextBlock Text="{DynamicResource L_Servers}" Style="{StaticResource Section}"/>
+            <WrapPanel Margin="0,8,0,0">
+              <StackPanel Width="140">
+                <TextBlock Text="{DynamicResource L_Name}" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Name}"/>
+              </StackPanel>
+              <StackPanel Width="210">
+                <TextBlock Text="{DynamicResource L_ServerAddress}" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding ServerAddress, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_ServerAddress}"/>
+              </StackPanel>
+              <Button Content="{DynamicResource L_Add}" Command="{Binding AddServer}" VerticalAlignment="Bottom"/>
+            </WrapPanel>
+            <WrapPanel>
+              <ComboBox ItemsSource="{Binding Servers}" SelectedItem="{Binding SelectedServer}" DisplayMemberPath="Label" MinWidth="214" MaxWidth="300"/>
+              <Button Content="{DynamicResource L_Ping}" Command="{Binding PingServer}"/>
+              <Button Content="{DynamicResource L_Connect}" Command="{Binding JoinServer}"/>
+              <Button Content="{DynamicResource L_Remove}" Command="{Binding RemoveServer}"/>
+              <TextBlock Text="{Binding ServerStatus}" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Tile}">
+          <StackPanel>
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="{DynamicResource L_OpenFolder}" Command="{Binding OpenScreenshots}"/>
+              <TextBlock Text="{DynamicResource L_Screenshots}" Style="{StaticResource Section}"/>
+            </DockPanel>
+            <TextBlock Text="{DynamicResource L_NoScreens}" Foreground="{DynamicResource Muted}">
+              <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers><DataTrigger Binding="{Binding Screenshots.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+              </Style></TextBlock.Style>
+            </TextBlock>
+            <ItemsControl ItemsSource="{Binding Screenshots}">
+              <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate><DataTemplate>
+                <Border Background="{DynamicResource InputSurface}" CornerRadius="8" Padding="4" Margin="0,0,8,8">
+                  <Image Source="{Binding Thumbnail}" Width="142" Height="86" Stretch="UniformToFill" ToolTip="{Binding Path}"/>
+                </Border>
+              </DataTemplate></ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </DataTemplate>
+  <DataTemplate x:Key="PreferencesView">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+      <StackPanel MaxWidth="950" HorizontalAlignment="Stretch">
+        <TextBlock Text="{DynamicResource L_Settings}" Style="{StaticResource Section}" Margin="0,0,0,12"/>
+        <Border Style="{StaticResource Tile}">
+          <StackPanel>
+            <WrapPanel>
+              <StackPanel Width="150"><TextBlock Text="{DynamicResource L_Theme}" Style="{StaticResource FieldLabel}"/>
+                <ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding PendingTheme}"/></StackPanel>
+              <StackPanel Width="200"><TextBlock Text="{DynamicResource L_Accent}" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding PendingAccent, UpdateSourceTrigger=PropertyChanged}"/></StackPanel>
+              <StackPanel Width="130"><TextBlock Text="{DynamicResource L_Language}" Style="{StaticResource FieldLabel}"/>
+                <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding PendingLanguage}"/></StackPanel>
+            </WrapPanel>
+            <TextBlock Text="{DynamicResource L_Background}" Style="{StaticResource FieldLabel}"/>
+            <WrapPanel>
+              <Button Content="{DynamicResource L_ChooseImage}" Command="{Binding BrowseBackground}"/>
+              <Button Content="{DynamicResource L_Reset}" Command="{Binding ClearBackground}"/>
+              <TextBlock Text="{Binding PendingBackground}" MaxWidth="380" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+            </WrapPanel>
+            <TextBlock Text="{DynamicResource L_DataDirectory}" Style="{StaticResource FieldLabel}"/>
+            <TextBox Text="{Binding PendingDirectory, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="{DynamicResource L_Retention}" Style="{StaticResource FieldLabel}"/>
+            <TextBox Text="{Binding PendingRetention, UpdateSourceTrigger=PropertyChanged}" Width="110" HorizontalAlignment="Left"/>
+            <CheckBox Content="{DynamicResource L_Discord}" IsChecked="{Binding PendingDiscord}" Margin="0,6"/>
+            <TextBlock Text="{DynamicResource L_DiscordId}" Style="{StaticResource FieldLabel}"/>
+            <TextBox Text="{Binding PendingDiscordId, UpdateSourceTrigger=PropertyChanged}" Width="245" HorizontalAlignment="Left"/>
+            <CheckBox Content="{DynamicResource L_ExternalAvatars}" IsChecked="{Binding PendingAvatars}" Margin="0,6,0,10"/>
+            <Button Content="{DynamicResource L_Save}" Command="{Binding SavePreferences}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Tile}">
+          <StackPanel>
+            <TextBlock Text="{DynamicResource L_Updates}" Style="{StaticResource Section}"/>
+            <TextBlock Text="{Binding CurrentVersion}" Foreground="{DynamicResource Muted}" Margin="0,5,0,8"/>
+            <WrapPanel>
+              <Button Content="{DynamicResource L_CheckUpdates}" Command="{Binding CheckLauncher}"/>
+              <Button Content="{DynamicResource L_InstallUpdate}" Command="{Binding InstallLauncher}"/>
+              <TextBlock Text="{Binding UpdateStatus}" VerticalAlignment="Center"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </DataTemplate>
+  <DataTemplate x:Key="InstancePreferencesView">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+      <StackPanel MaxWidth="950" HorizontalAlignment="Stretch">
+        <TextBlock Text="{DynamicResource L_InstanceSettings}" Style="{StaticResource Section}"/>
+        <TextBlock Text="{Binding SelectedInstance.Name}" Foreground="{DynamicResource Muted}" Margin="0,4,0,10"/>
+        <Border Style="{StaticResource Tile}">
+          <StackPanel>
+            <TextBlock Text="{Binding InstanceRam, StringFormat={}{0:0} MB}" FontSize="20" FontWeight="SemiBold"/>
+            <Slider Minimum="512" Maximum="65536" TickFrequency="512" IsSnapToTickEnabled="True" Value="{Binding InstanceRam}"/>
+            <TextBlock Text="{DynamicResource L_RecommendedRam}" Foreground="{DynamicResource Muted}" Margin="0,2,0,12"/>
+            <TextBlock Text="{Binding JavaHint}" Style="{StaticResource FieldLabel}"/>
+            <ComboBox ItemsSource="{Binding JavaInstallations}" DisplayMemberPath="Label" TextSearch.TextPath="Path"
+                      IsEditable="True" Text="{Binding JavaPath, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="{DynamicResource L_Java}"/>
+            <WrapPanel>
+              <Button Content="{DynamicResource L_FindJava}" Command="{Binding FindJava}"/>
+              <Button Content="{DynamicResource L_InstallJava}" Command="{Binding InstallJava}" Style="{StaticResource SecondaryPixelButton}"/>
+              <Button Content="{DynamicResource L_SelectCover}" Command="{Binding BrowseCover}"/>
+              <Button Content="{DynamicResource L_Save}" Command="{Binding SaveInstance}" Style="{StaticResource PrimaryButton}"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Tile}">
+          <StackPanel>
+            <TextBlock Text="{DynamicResource L_Pack}" Style="{StaticResource Section}"/>
+            <TextBlock Text="{Binding PackName}" Foreground="{DynamicResource Muted}" Margin="0,6"/>
+            <TextBlock Text="{Binding PackUpdateLabel}" Foreground="{DynamicResource Accent}" FontWeight="Bold" Margin="0,5"
+                       Visibility="{Binding PackUpdateAvailable, Converter={StaticResource BoolVisibility}}"/>
+            <WrapPanel>
+              <Button Content="{DynamicResource L_CheckPack}" Command="{Binding CheckPack}"/>
+              <Button Content="{DynamicResource L_UpdatePack}" Command="{Binding UpdatePack}"/>
+              <Button Content="{DynamicResource L_Recommendations}" Command="{Binding Recommendations}"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </DataTemplate>
+</ResourceDictionary>

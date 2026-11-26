@@ -1,0 +1,24 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Ink" Color="#282344"/>
+    <SolidColorBrush x:Key="Muted" Color="#665E82"/>
+    <SolidColorBrush x:Key="Surface" Color="#FCFAFF"/>
+    <SolidColorBrush x:Key="Line" Color="#DDD5EF"/>
+    <SolidColorBrush x:Key="Soft" Color="#F2ECFC"/>
+    <SolidColorBrush x:Key="Accent" Color="#6035C5"/>
+    <LinearGradientBrush x:Key="BackgroundWash" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#F3EDFF" Offset="0"/>
+      <GradientStop Color="#EDF1FF" Offset=".55"/>
+      <GradientStop Color="#E3FAF5" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Hero" StartPoint="0,0" EndPoint="1,.8">
+      <GradientStop Color="#2E1A55" Offset="0"/>
+      <GradientStop Color="#5831A2" Offset=".60"/>
+      <GradientStop Color="#315FA3" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Primary" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#6535CB" Offset="0"/>
+      <GradientStop Color="#4F44BF" Offset="1"/>
+    </LinearGradientBrush>
+    <DropShadowEffect x:Key="PanelShadow" Color="#543F84" BlurRadius="24" ShadowDepth="6" Opacity=".15"/>
+    <SolidColorBrush x:Key="InputSurface" Color="#FFFFFF"/><SolidColorBrush x:Key="AccentText" Color="#FFFFFF"/><SolidColorBrush x:Key="DangerSurface" Color="#FFF0F3"/><SolidColorBrush x:Key="DangerText" Color="#922949"/>
+</ResourceDictionary>

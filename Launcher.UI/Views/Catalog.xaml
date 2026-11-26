@@ -1,0 +1,195 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="../Styles/Controls.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <Style x:Key="CatalogScrollBar" TargetType="ScrollBar">
+    <Setter Property="Width" Value="13"/>
+    <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+      <Border Background="{DynamicResource InputSurface}" CornerRadius="5">
+        <Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+          <Track.DecreaseRepeatButton>
+            <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+          </Track.DecreaseRepeatButton>
+          <Track.Thumb>
+            <Thumb MinHeight="20"><Thumb.Template><ControlTemplate TargetType="Thumb">
+              <Border><Border.Background>
+                <ImageBrush ImageSource="/Launcher.UI;component/Assets/UI-v2/Controls/scrollbar-thumb.png"/>
+              </Border.Background></Border>
+            </ControlTemplate></Thumb.Template></Thumb>
+          </Track.Thumb>
+          <Track.IncreaseRepeatButton>
+            <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+          </Track.IncreaseRepeatButton>
+        </Track>
+      </Border>
+    </ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <DataTemplate x:Key="CatalogView">
+    <Grid>
+    <Grid TextElement.Foreground="{DynamicResource Ink}" TextElement.FontWeight="Normal">
+      <Grid.Style><Style TargetType="Grid"><Style.Triggers>
+        <DataTrigger Binding="{Binding HasDetails}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+      </Style.Triggers></Style></Grid.Style>
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <StackPanel Grid.ColumnSpan="2">
+        <TextBlock Text="{DynamicResource L_Catalog}" FontSize="24" FontWeight="Bold" Margin="0,0,0,8"/>
+        <TextBlock Text="{Binding Breadcrumb}" Foreground="{DynamicResource Muted}" Margin="0,0,0,6"
+                   Visibility="{Binding HasDetails, Converter={StaticResource BoolVisibility}}"/>
+        <ListBox ItemsSource="{Binding Types}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                 SelectedValue="{Binding TypeFilter}" BorderThickness="0" Background="Transparent" Padding="0" Margin="0,0,0,5"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+          <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+              <Setter Property="Margin" Value="0,0,5,2"/>
+              <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem">
+                <Border x:Name="Chip" Background="{DynamicResource Soft}" CornerRadius="7" Padding="10,5">
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="Glyph" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE8FD;" Margin="0,0,6,0"/>
+                    <ContentPresenter/>
+                  </StackPanel>
+                </Border>
+                <ControlTemplate.Triggers>
+                  <DataTrigger Binding="{Binding Value}" Value="mod"><Setter TargetName="Glyph" Property="Text" Value="&#xEA86;"/></DataTrigger>
+                  <DataTrigger Binding="{Binding Value}" Value="modpack"><Setter TargetName="Glyph" Property="Text" Value="&#xE7B8;"/></DataTrigger>
+                  <DataTrigger Binding="{Binding Value}" Value="resourcepack"><Setter TargetName="Glyph" Property="Text" Value="&#xE91B;"/></DataTrigger>
+                  <DataTrigger Binding="{Binding Value}" Value="shader"><Setter TargetName="Glyph" Property="Text" Value="&#xE945;"/></DataTrigger>
+                  <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chip" Property="Background" Value="{DynamicResource Line}"/></Trigger>
+                  <Trigger Property="IsSelected" Value="True">
+                    <Setter TargetName="Chip" Property="Background" Value="{DynamicResource Primary}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource AccentText}"/>
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate></Setter.Value></Setter>
+            </Style>
+          </ListBox.ItemContainerStyle>
+        </ListBox>
+        <WrapPanel Margin="0,0,0,4">
+          <Grid Width="240" Margin="0,3,8,8">
+            <TextBox x:Name="SearchBox" Margin="0" Padding="34,5,8,5" Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.Name="{DynamicResource L_SearchHint}"/>
+            <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/search-24.png" Width="18" Height="18" Margin="9,0,0,0"
+                   HorizontalAlignment="Left" IsHitTestVisible="False" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+            <TextBlock Text="{DynamicResource L_SearchHint}" Margin="34,0,8,0" VerticalAlignment="Center"
+                       Foreground="{DynamicResource Muted}" IsHitTestVisible="False">
+              <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger></Style.Triggers>
+              </Style></TextBlock.Style>
+            </TextBlock>
+          </Grid>
+          <Grid Width="108">
+            <TextBox x:Name="GameFilter" Text="{Binding SearchGame, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.Name="{DynamicResource L_MinecraftVersion}" ToolTip="{DynamicResource L_MinecraftVersion}"/>
+            <TextBlock Text="{DynamicResource L_GameFilter}" Margin="9,0,11,5" VerticalAlignment="Center" Foreground="{DynamicResource Muted}"
+                       IsHitTestVisible="False">
+              <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=GameFilter}" Value="">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger></Style.Triggers>
+              </Style></TextBlock.Style>
+            </TextBlock>
+          </Grid>
+          <ComboBox Width="140" ItemsSource="{Binding Filters}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                    SelectedValue="{Binding LoaderFilter}" AutomationProperties.Name="{DynamicResource L_Loader}"/>
+          <ComboBox Width="145" ItemsSource="{Binding Sorts}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                    SelectedValue="{Binding Sort}" AutomationProperties.Name="{DynamicResource L_Sort}"/>
+        </WrapPanel>
+      </StackPanel>
+      <ListBox Grid.Row="1" ItemsSource="{Binding Hits}" SelectedItem="{Binding Hit}" Background="Transparent" BorderThickness="0" Padding="0"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="{DynamicResource L_Catalog}">
+        <ListBox.Resources>
+          <Style TargetType="ScrollBar" BasedOn="{StaticResource CatalogScrollBar}"/>
+        </ListBox.Resources>
+        <ListBox.ItemContainerStyle>
+          <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+            <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,4,7"/>
+          </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemTemplate><DataTemplate>
+          <Border Background="{DynamicResource Soft}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="10" Padding="10">
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="60"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+              <Border Width="52" Height="52" CornerRadius="8" Background="{DynamicResource InputSurface}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Image Stretch="Uniform">
+                  <Image.Style><Style TargetType="Image">
+                    <Setter Property="Source" Value="{Binding Icon}"/>
+                    <Style.Triggers><DataTrigger Binding="{Binding Icon}" Value="{x:Null}">
+                      <Setter Property="Source" Value="/Launcher.UI;component/Assets/UI-v2/Icons/catalog-48.png"/>
+                      <Setter Property="Width" Value="26"/>
+                      <Setter Property="Height" Value="26"/>
+                      <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+                    </DataTrigger></Style.Triggers>
+                  </Style></Image.Style>
+                </Image>
+              </Border>
+              <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="15" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Author}" Foreground="{DynamicResource Muted}" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Ink}" TextWrapping="Wrap"
+                           MaxHeight="40" TextTrimming="CharacterEllipsis" Margin="0,3,0,0" ToolTip="{Binding Description}"/>
+                <TextBlock Text="{Binding Loaders}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
+                           TextTrimming="CharacterEllipsis">
+                  <TextBlock.Style><Style TargetType="TextBlock"><Style.Triggers>
+                    <DataTrigger Binding="{Binding Loaders}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                  </Style.Triggers></Style></TextBlock.Style>
+                </TextBlock>
+              </StackPanel>
+              <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <Button Command="{Binding DataContext.InstallFromCatalog, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                        CommandParameter="{Binding}" Style="{StaticResource PrimaryButton}" Margin="0,0,0,5">
+                  <StackPanel Orientation="Horizontal">
+                    <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/download-24.png" Width="16" Height="16" Margin="0,0,6,0"/>
+                    <TextBlock Text="{DynamicResource L_Install}"/>
+                  </StackPanel>
+                </Button>
+                <Button Command="{Binding DataContext.ViewProject, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                        CommandParameter="{Binding}" Style="{StaticResource SecondaryPixelButton}" Margin="0,0,0,5">
+                  <StackPanel Orientation="Horizontal">
+                    <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/external-24.png" Width="16" Height="16" Margin="0,0,6,0" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                    <TextBlock Text="{DynamicResource L_OpenProject}"/>
+                  </StackPanel>
+                </Button>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" ToolTip="{DynamicResource L_Downloads}">
+                  <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/download-24.png" Width="13" Height="13" Margin="0,0,4,0" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                  <TextBlock Text="{Binding Downloads, StringFormat=N0}" Foreground="{DynamicResource Muted}" FontSize="11"/>
+                </StackPanel>
+              </StackPanel>
+            </Grid>
+          </Border>
+        </DataTemplate></ListBox.ItemTemplate>
+      </ListBox>
+      <Border Grid.Row="1" Background="{DynamicResource Surface}" Margin="0,0,4,0" Style="{StaticResource Skeleton}"
+              Visibility="{Binding CatalogBusy, Converter={StaticResource BoolVisibility}}">
+        <StackPanel>
+          <Border Background="{DynamicResource Soft}" Height="82" Margin="0,0,0,7" CornerRadius="10"/>
+          <Border Background="{DynamicResource Soft}" Height="82" Margin="0,0,0,7" CornerRadius="10"/>
+          <Border Background="{DynamicResource Soft}" Height="82" CornerRadius="10"/>
+        </StackPanel>
+      </Border>
+      <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource Muted}"
+                 Text="{DynamicResource L_NoResults}" Visibility="{Binding CatalogEmpty, Converter={StaticResource BoolVisibility}}"/>
+      <Border Grid.Row="1" Background="{DynamicResource Surface}" Visibility="{Binding HasCatalogError, Converter={StaticResource BoolVisibility}}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+          <TextBlock Text="{Binding CatalogError}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,10"/>
+          <Button HorizontalAlignment="Center" Command="{Binding RetryCatalog}" Content="{DynamicResource L_RetryCatalog}"/>
+        </StackPanel>
+      </Border>
+      <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,8,0,0">
+        <Button Command="{Binding Previous}" ToolTip="{DynamicResource L_Previous}" AutomationProperties.Name="{DynamicResource L_Previous}">
+          <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/previous-24.png" Width="16" Height="16"/>
+        </Button>
+        <Button Command="{Binding Next}" ToolTip="{DynamicResource L_Next}" AutomationProperties.Name="{DynamicResource L_Next}">
+          <Image Source="/Launcher.UI;component/Assets/UI-v2/Icons/next-24.png" Width="16" Height="16"/>
+        </Button>
+        <TextBlock Text="{Binding Page}" VerticalAlignment="Center" Margin="3,0,0,8" Foreground="{DynamicResource Muted}"/>
+      </StackPanel>
+    </Grid>
+    <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource ProjectDetailsView}"
+                    Visibility="{Binding HasDetails, Converter={StaticResource BoolVisibility}}"/>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>

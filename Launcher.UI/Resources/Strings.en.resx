@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Play" xml:space="preserve"><value>Play</value></data>
+  <data name="Catalog" xml:space="preserve"><value>Catalog</value></data>
+  <data name="Instances" xml:space="preserve"><value>Instances</value></data>
+  <data name="Accounts" xml:space="preserve"><value>Accounts</value></data>
+  <data name="Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="InstanceSettings" xml:space="preserve"><value>Instance settings</value></data>
+  <data name="ActiveAccount" xml:space="preserve"><value>Active account</value></data>
+  <data name="ActiveInstance" xml:space="preserve"><value>Active instance</value></data>
+  <data name="NoAccount" xml:space="preserve"><value>Choose or create an offline account</value></data>
+  <data name="NoInstances" xml:space="preserve"><value>No instances yet — create your first</value></data>
+  <data name="CreateFirst" xml:space="preserve"><value>Create first instance</value></data>
+  <data name="NewInstance" xml:space="preserve"><value>New instance</value></data>
+  <data name="Name" xml:space="preserve"><value>Name</value></data>
+  <data name="MinecraftVersion" xml:space="preserve"><value>Minecraft version</value></data>
+  <data name="Ram" xml:space="preserve"><value>RAM, MB</value></data>
+  <data name="Loader" xml:space="preserve"><value>Loader</value></data>
+  <data name="LoaderVersion" xml:space="preserve"><value>Loader version</value></data>
+  <data name="FetchVersions" xml:space="preserve"><value>Load versions</value></data>
+  <data name="Create" xml:space="preserve"><value>Create</value></data>
+  <data name="ImportPack" xml:space="preserve"><value>Import .mrpack</value></data>
+  <data name="Rename" xml:space="preserve"><value>Rename</value></data>
+  <data name="DeleteInstance" xml:space="preserve"><value>Delete instance</value></data>
+  <data name="InstalledMods" xml:space="preserve"><value>Installed mods</value></data>
+  <data name="DeleteMod" xml:space="preserve"><value>Remove mod</value></data>
+  <data name="Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Next" xml:space="preserve"><value>Next</value></data>
+  <data name="OpenProject" xml:space="preserve"><value>Open project</value></data>
+  <data name="TargetInstance" xml:space="preserve"><value>Target instance</value></data>
+  <data name="Install" xml:space="preserve"><value>Install</value></data>
+  <data name="OfflineAccount" xml:space="preserve"><value>Offline account</value></data>
+  <data name="Nick" xml:space="preserve"><value>Nickname</value></data>
+  <data name="AddAccount" xml:space="preserve"><value>Add account</value></data>
+  <data name="ChangeNick" xml:space="preserve"><value>Change nickname</value></data>
+  <data name="DeleteAccount" xml:space="preserve"><value>Delete account</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Logs" xml:space="preserve"><value>Logs</value></data>
+  <data name="AutoScroll" xml:space="preserve"><value>Auto-scroll</value></data>
+  <data name="Screenshots" xml:space="preserve"><value>Screenshots</value></data>
+  <data name="OpenFolder" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Servers" xml:space="preserve"><value>Servers</value></data>
+  <data name="Add" xml:space="preserve"><value>Add</value></data>
+  <data name="Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Ping" xml:space="preserve"><value>Ping</value></data>
+  <data name="Connect" xml:space="preserve"><value>Connect</value></data>
+  <data name="TotalPlayTime" xml:space="preserve"><value>Total play time</value></data>
+  <data name="ModCount" xml:space="preserve"><value>Mods</value></data>
+  <data name="Size" xml:space="preserve"><value>Size</value></data>
+  <data name="Duplicate" xml:space="preserve"><value>Duplicate</value></data>
+  <data name="Export" xml:space="preserve"><value>Export ZIP</value></data>
+  <data name="SelectCover" xml:space="preserve"><value>Choose cover</value></data>
+  <data name="Java" xml:space="preserve"><value>Java</value></data>
+  <data name="JavaAutomatic" xml:space="preserve"><value>Automatically select Java</value></data>
+  <data name="FindJava" xml:space="preserve"><value>Detect Java</value></data>
+  <data name="JavaHint" xml:space="preserve"><value>Java {0} recommended</value></data>
+  <data name="RecommendedRam" xml:space="preserve"><value>4096 MB is suitable for most instances</value></data>
+  <data name="Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Theme" xml:space="preserve"><value>Theme</value></data>
+  <data name="Accent" xml:space="preserve"><value>Accent color (HEX)</value></data>
+  <data name="Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Background" xml:space="preserve"><value>Home background</value></data>
+  <data name="ChooseImage" xml:space="preserve"><value>Choose image</value></data>
+  <data name="Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="DataDirectory" xml:space="preserve"><value>Data and game folder location</value></data>
+  <data name="Retention" xml:space="preserve"><value>Log retention, days (0 — keep indefinitely)</value></data>
+  <data name="Discord" xml:space="preserve"><value>Discord Rich Presence</value></data>
+  <data name="DiscordId" xml:space="preserve"><value>Discord Application ID</value></data>
+  <data name="ExternalAvatars" xml:space="preserve"><value>Show avatars from mc-heads.net</value></data>
+  <data name="Updates" xml:space="preserve"><value>Launcher updates</value></data>
+  <data name="CheckUpdates" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="InstallUpdate" xml:space="preserve"><value>Install update</value></data>
+  <data name="Pack" xml:space="preserve"><value>Modpack</value></data>
+  <data name="CheckPack" xml:space="preserve"><value>Check modpack</value></data>
+  <data name="UpdatePack" xml:space="preserve"><value>Update modpack</value></data>
+  <data name="Recommendations" xml:space="preserve"><value>Install performance mods</value></data>
+  <data name="UpdateAvailable" xml:space="preserve"><value>Update available</value></data>
+  <data name="UpToDate" xml:space="preserve"><value>You're up to date</value></data>
+  <data name="NoPackOrigin" xml:space="preserve"><value>Updates are available for packs installed from the catalog after this launcher update.</value></data>
+  <data name="NoUpdateFeed" xml:space="preserve"><value>Set updateFeed in appsettings.json</value></data>
+  <data name="InstallLauncherConfirm" xml:space="preserve"><value>Run the update installer and close the launcher?</value></data>
+  <data name="Ready" xml:space="preserve"><value>Ready</value></data>
+  <data name="Working" xml:space="preserve"><value>Working…</value></data>
+  <data name="Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Installed" xml:space="preserve"><value>Installation complete</value></data>
+  <data name="GameStarted" xml:space="preserve"><value>Minecraft started</value></data>
+  <data name="GameCrash" xml:space="preserve"><value>Minecraft crashed</value></data>
+  <data name="OpenLog" xml:space="preserve"><value>Open log</value></data>
+  <data name="Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="CrashMemory" xml:space="preserve"><value>The game ran out of memory. Check the instance RAM settings.</value></data>
+  <data name="CrashJava" xml:space="preserve"><value>Java is incompatible with the game or a mod.</value></data>
+  <data name="CrashMods" xml:space="preserve"><value>The log indicates a possible mod conflict.</value></data>
+  <data name="CrashGraphics" xml:space="preserve"><value>The log contains a graphics driver or OpenGL error.</value></data>
+  <data name="CrashUnknown" xml:space="preserve"><value>No matching cause. Check the last lines of the log.</value></data>
+  <data name="InvalidJava" xml:space="preserve"><value>Choose an existing java.exe / javaw.exe or leave the field blank.</value></data>
+  <data name="InvalidRetention" xml:space="preserve"><value>Enter a log retention period from 0 to 3650 days.</value></data>
+  <data name="RestartDirectory" xml:space="preserve"><value>The new data directory takes effect after restart.</value></data>
+  <data name="InvalidNick" xml:space="preserve"><value>Enter 3–16 Latin letters, digits or underscores.</value></data>
+  <data name="DuplicateNick" xml:space="preserve"><value>This profile already exists.</value></data>
+  <data name="DeleteAccountConfirm" xml:space="preserve"><value>Delete profile '{0}'?</value></data>
+  <data name="InvalidServer" xml:space="preserve"><value>Enter a server address as host or host:port.</value></data>
+  <data name="ServerUnavailable" xml:space="preserve"><value>Server unavailable</value></data>
+  <data name="NeedsLoader" xml:space="preserve"><value>Select an instance with a mod loader.</value></data>
+  <data name="InstallPerformanceConfirm" xml:space="preserve"><value>Install compatible versions of Sodium, Lithium, FerriteCore and Iris?</value></data>
+  <data name="InvalidDrop" xml:space="preserve"><value>Drop .mrpack or .jar files.</value></data>
+  <data name="ConfirmJar" xml:space="preserve"><value>Install {0} files into {1}?</value></data>
+  <data name="ModDuplicate" xml:space="preserve"><value>Duplicate mod detected</value></data>
+  <data name="ModLoaderConflict" xml:space="preserve"><value>Possible loader incompatibility</value></data>
+  <data name="ModGameConflict" xml:space="preserve"><value>A different Minecraft version is required</value></data>
+  <data name="ModUnknown" xml:space="preserve"><value>Loader metadata could not be identified</value></data>
+  <data name="NoFileChanges" xml:space="preserve"><value>No files changed</value></data>
+  <data name="NoResults" xml:space="preserve"><value>No results</value></data>
+  <data name="PageFormat" xml:space="preserve"><value>{0}–{1} of {2}</value></data>
+  <data name="AllTypes" xml:space="preserve"><value>All types</value></data>
+  <data name="Mods" xml:space="preserve"><value>Mods</value></data>
+  <data name="Modpacks" xml:space="preserve"><value>Modpacks</value></data>
+  <data name="ResourcePacks" xml:space="preserve"><value>Resource packs</value></data>
+  <data name="Shaders" xml:space="preserve"><value>Shaders</value></data>
+  <data name="AllLoaders" xml:space="preserve"><value>All loaders</value></data>
+  <data name="Relevance" xml:space="preserve"><value>Relevance</value></data>
+  <data name="Downloads" xml:space="preserve"><value>Downloads</value></data>
+  <data name="Follows" xml:space="preserve"><value>Follows</value></data>
+  <data name="Updated" xml:space="preserve"><value>Last updated</value></data>
+  <data name="Newest" xml:space="preserve"><value>Newest</value></data>
+  <data name="SearchHint" xml:space="preserve"><value>Search query</value></data>
+  <data name="ProjectType" xml:space="preserve"><value>Project type</value></data>
+  <data name="Sort" xml:space="preserve"><value>Sort</value></data>
+  <data name="CommandPalette" xml:space="preserve"><value>Quick search</value></data>
+  <data name="Minimize" xml:space="preserve"><value>Minimize</value></data>
+  <data name="Maximize" xml:space="preserve"><value>Maximize or restore</value></data>
+  <data name="Close" xml:space="preserve"><value>Close</value></data>
+  <data name="ServerAddress" xml:space="preserve"><value>Server address</value></data>
+  <data name="Browse" xml:space="preserve"><value>Browse</value></data>
+  <data name="NoScreens" xml:space="preserve"><value>Screenshots appear here after taking one in-game</value></data>
+  <data name="ChooseOptional" xml:space="preserve"><value>Optional files</value></data>
+  <data name="Continue" xml:space="preserve"><value>Continue</value></data>
+  <data name="DeleteInstanceConfirm" xml:space="preserve"><value>Delete '{0}' and its worlds and files?</value></data>
+  <data name="Timeout" xml:space="preserve"><value>The server did not respond in time.</value></data>
+  <data name="Network" xml:space="preserve"><value>Network error. Check your connection.</value></data>
+  <data name="RateLimit" xml:space="preserve"><value>Rate limit reached. Try again later.</value></data>
+  <data name="RemoveModConfirm" xml:space="preserve"><value>Remove {0}?</value></data>
+  <data name="Dependents" xml:space="preserve"><value>Required by: {0}.</value></data>
+  <data name="RamInvalid" xml:space="preserve"><value>Enter RAM as a whole number in megabytes.</value></data>
+  <data name="NoLoaders" xml:space="preserve"><value>No loaders available for this Minecraft version.</value></data>
+  <data name="ChooseProject" xml:space="preserve"><value>Select a project from the search results.</value></data>
+  <data name="ChooseVersion" xml:space="preserve"><value>Select a project version.</value></data>
+  <data name="ChooseInstance" xml:space="preserve"><value>Select an instance.</value></data>
+  <data name="PackInPlace" xml:space="preserve"><value>Install the modpack in '{0}'?&#10;Yes — selected instance. No — new instance.</value></data>
+  <data name="PackInNew" xml:space="preserve"><value>The selected instance contains files. Create a new instance for the modpack?</value></data>
+  <data name="JsonError" xml:space="preserve"><value>Could not read JSON.</value></data>
+<data name="CatalogUnavailable"><value>Could not load the catalog. Check your connection.</value></data>
+  <data name="RetryCatalog"><value>Retry</value></data>
+  <data name="ProjectVersions"><value>Versions</value></data>
+  <data name="GameFilter"><value>MC version</value></data>
+  <data name="LoaderFetchError"><value>Could not load versions. Check your connection.</value></data>
+  <data name="InstanceContent"><value>Content</value></data>
+  <data name="InstanceFiles"><value>Files</value></data>
+  <data name="InstanceWorlds"><value>Worlds</value></data>
+  <data name="OpenInstance"><value>Open instance</value></data>
+  <data name="AddFiles"><value>Add files</value></data>
+  <data name="FindProjects"><value>Find projects</value></data>
+  <data name="Reload"><value>Refresh</value></data>
+  <data name="InstalledProject"><value>Project</value></data>
+  <data name="InstalledVersion"><value>Version and file</value></data>
+  <data name="RowActions"><value>Actions</value></data>
+  <data name="ToggleContent"><value>Toggle file</value></data>
+  <data name="EnabledContent"><value>On</value></data>
+  <data name="DisabledContent"><value>Off</value></data>
+  <data name="DisableContent"><value>Disable mod</value></data>
+  <data name="EmptyContent"><value>No matching files</value></data>
+  <data name="NoWorlds"><value>No worlds in this instance</value></data>
+  <data name="WorkspaceHours"><value>Play time · {0:0.0} h</value></data>
+  <data name="LastPlayed"><value>Last played · {0}</value></data>
+  <data name="NeverPlayed"><value>Never played</value></data>
+  <data name="LoadingLoaderVersions"><value>Loading loader versions…</value></data>
+  <data name="ChooseLoaderVersion"><value>Versions available: {0}. Choose a version.</value></data>
+  <data name="SearchInstanceContent"><value>Search installed content</value></data>
+  <data name="BackToCatalog"><value>← Back to catalog</value></data>
+  <data name="ProjectOverview"><value>Overview</value></data>
+  <data name="ProjectGallery"><value>Gallery</value></data>
+  <data name="NoProjectImages"><value>This project has no images yet</value></data>
+  <data name="RemoveContentTitle"><value>Remove file?</value></data>
+  <data name="InstallJava"><value>Install Java</value></data>
+  <data name="NoCompatibleProjectVersion"><value>No compatible project version for this instance.</value></data>
+  <data name="RecentInstances"><value>Recently played</value></data>
+  <data name="InstanceLibrary"><value>Library</value></data>
+  <data name="ZoomOut"><value>Zoom out</value></data>
+  <data name="ZoomIn"><value>Zoom in</value></data>
+  <data name="ZoomFit"><value>Fit to window</value></data>
+  <data name="OpenGalleryImage"><value>Open image</value></data>
+  <data name="GalleryImageLoading"><value>Loading image…</value></data>
+  <data name="GalleryImageFailed"><value>Could not load image</value></data>
+</root>

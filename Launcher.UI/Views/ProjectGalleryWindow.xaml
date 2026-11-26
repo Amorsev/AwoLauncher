@@ -1,0 +1,36 @@
+<Window x:Class="Launcher.UI.ProjectGalleryWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Width="940" Height="670" MinWidth="480" MinHeight="360" WindowStartupLocation="CenterOwner"
+ ShowInTaskbar="False" UseLayoutRounding="True" Background="{DynamicResource Surface}"
+ Foreground="{DynamicResource Ink}" FontFamily="Segoe UI" FontSize="14" PreviewKeyDown="HandleKey">
+  <Grid Margin="16">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <DockPanel Margin="0,0,0,7">
+      <TextBlock x:Name="Counter" DockPanel.Dock="Right" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+      <TextBlock x:Name="Caption" FontSize="19" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+    </DockPanel>
+    <Border Grid.Row="1" Background="{DynamicResource InputSurface}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+      <Grid SizeChanged="ResizePhoto">
+        <ScrollViewer x:Name="Viewport" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <Image x:Name="Photo" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" ImageFailed="PhotoFailed">
+            <Image.LayoutTransform><ScaleTransform x:Name="PhotoScale" ScaleX="1" ScaleY="1"/></Image.LayoutTransform>
+          </Image>
+        </ScrollViewer>
+        <TextBlock x:Name="Status" Foreground="{DynamicResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   IsHitTestVisible="False" TextWrapping="Wrap"/>
+      </Grid>
+    </Border>
+    <DockPanel Grid.Row="2" Margin="0,9,0,0">
+      <Button DockPanel.Dock="Right" Content="{DynamicResource L_Close}" IsCancel="True" Margin="4,0,0,0"/>
+      <WrapPanel>
+        <Button x:Name="PreviousPhoto" Content="←" Click="Previous" ToolTip="{DynamicResource L_Previous}"
+                AutomationProperties.Name="{DynamicResource L_Previous}" Style="{DynamicResource SecondaryPixelButton}"/>
+        <Button x:Name="NextPhoto" Content="→" Click="Next" ToolTip="{DynamicResource L_Next}"
+                AutomationProperties.Name="{DynamicResource L_Next}" Style="{DynamicResource SecondaryPixelButton}"/>
+        <Button Content="−" Click="ZoomOut" ToolTip="{DynamicResource L_ZoomOut}" AutomationProperties.Name="{DynamicResource L_ZoomOut}"/>
+        <Button x:Name="ZoomLabel" Content="100%" Click="ResetZoom" ToolTip="{DynamicResource L_ZoomFit}" AutomationProperties.Name="{DynamicResource L_ZoomFit}"/>
+        <Button Content="+" Click="ZoomIn" ToolTip="{DynamicResource L_ZoomIn}" AutomationProperties.Name="{DynamicResource L_ZoomIn}"/>
+      </WrapPanel>
+    </DockPanel>
+  </Grid>
+</Window>

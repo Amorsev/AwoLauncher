@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>1.1.0</Version>
+    <ApplicationIcon>Assets/awo-launcher.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Launcher.Core/Launcher.Core.csproj" />
+    <PackageReference Include="Markdig" Version="1.6.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.13.1" />
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <Resource Include="Assets/awo-launcher.ico;Assets/launcher-banner.jpg;Assets/instance-cover.png;Assets/UI-v2/Icons/*-24.png;Assets/UI-v2/Icons/catalog-48.png;Assets/UI-v2/Buttons/*.png;Assets/UI-v2/Controls/scrollbar-thumb.png" />
+  </ItemGroup>
+</Project>
